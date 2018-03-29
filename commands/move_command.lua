@@ -19,8 +19,7 @@ function MoveCommand:execute()
 		flux.to(self.actor.position, self.actor.moveSpeed, { x = self.actor.position.x + self.dir.x * TILE_SIZE, y = self.actor.position.y + self.dir.y * TILE_SIZE})
 			:oncomplete(function() 
 				self.actor.moving = false 
-				board.tiles[tilePos.y][tilePos.x] = "*" 
-
+				board.tiles[tilePos.y][tilePos.x] = "*"
 			end)
 	end
 end
