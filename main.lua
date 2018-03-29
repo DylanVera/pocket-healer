@@ -1,4 +1,4 @@
-require("dependencies")
+require("src.dependencies")
 
 function love.load()
     love.graphics.setBackgroundColor(1, 1, .75)
