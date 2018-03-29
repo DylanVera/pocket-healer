@@ -37,6 +37,10 @@ function Entity:damage(dmg)
     self.health = self.health - dmg
 end
 
+function Entity:processAI(params, dt)
+	
+end
+
 function Entity:draw()
 	love.graphics.setColor(self.color)
 	love.graphics.rectangle("fill", self.position.x, self.position.y, self.width, self.height)

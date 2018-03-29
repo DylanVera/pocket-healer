@@ -9,7 +9,8 @@ MoveCommand = class{
 
 function MoveCommand:execute()
 	local tilePos = board:toTilePos(self.actor.position.x + self.dir.x * TILE_SIZE, self.actor.position.y + self.dir.y * TILE_SIZE)
-	if not self.actor.moving and board:check(tilePos.x, tilePos.y) then		
+	if not self.actor.moving and board:check(tilePos.x, tilePos.y) then
+		board.tiles[self.oldPos.y][self.oldPos.x] = " "		
 		print("#commands before: "..commands.last + 1)
 		print("moving to "..tilePos.x..","..tilePos.y)
 		commands:pushRight(self)
@@ -19,6 +20,7 @@ function MoveCommand:execute()
 			:oncomplete(function() 
 				self.actor.moving = false 
 				board.tiles[tilePos.y][tilePos.x] = "*" 
+
 			end)
 	end
 end

@@ -23,3 +23,4 @@ playState = require("states.play_state")
 --entities/game objects
 require("board")
 require("entity")
+require("actionbar")

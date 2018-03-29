@@ -14,7 +14,7 @@ Board = class{
 					 }
 		self.boardSize = vector.new(9, 9)
 		self.size = vector.new(love.graphics.getWidth(), love.graphics.getHeight())
-		self.position = vector.new((self.size.x - TILE_SIZE * self.boardSize.x)/2, (self.size.y - TILE_SIZE * self.boardSize.y)/2)
+		self.position = vector.new(MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y)
 	end
 }
 
