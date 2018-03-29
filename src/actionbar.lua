@@ -19,6 +19,7 @@ function ActionBar:draw()
 		love.graphics.rectangle("fill", self.position.x + (i - 1) * TILE_SIZE, self.position.y, TILE_SIZE, TILE_SIZE)
 		love.graphics.setColor(0,0,0)
 		love.graphics.rectangle("line", self.position.x + (i - 1) * TILE_SIZE, self.position.y, TILE_SIZE, TILE_SIZE)
+		love.graphics.setNewFont(TILE_SIZE/4)
 		love.graphics.print(i, self.position.x + (TILE_SIZE * 0.1) + (i - 1) * TILE_SIZE, self.position.y + (TILE_SIZE * 0.1))
 	end
 end

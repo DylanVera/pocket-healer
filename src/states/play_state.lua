@@ -2,9 +2,8 @@ local playState = {}
 
 function playState:init()
 	board = Board()
-    player = Entity(board.position.x + 78, board.position.y + 78, {128, 96, 255})
-    enemy = Entity(board.position.x + (64 * 7) + 14, board.position.y + (64 * 7) + 14, {255, 96, 128})
-
+    player = Entity(board.position.x + (TILE_SIZE * 1.25), board.position.y + (TILE_SIZE * 1.25), {128, 96, 255})
+    enemy = Entity(board.position.x + (TILE_SIZE * 7) + (TILE_SIZE * 0.2), board.position.y + (TILE_SIZE * 7) + (TILE_SIZE * 0.2), {255, 96, 128})
     --timer.every(1.5, function() MoveCommand(enemy, vector.new(-2,0)):execute() end)
     commands = Queue()
     actionbar = ActionBar(player)
@@ -17,10 +16,12 @@ function playState:leave()
 end
 
 function playState:draw()
+	push:start()
 	board:draw()
 	player:draw()
 	enemy:draw()
 	actionbar:draw()
+	push:finish()
 end
 
 function playState:update(dt)

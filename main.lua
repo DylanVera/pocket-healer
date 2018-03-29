@@ -1,15 +1,18 @@
 require("src.dependencies")
 
 function love.load()
-    love.graphics.setBackgroundColor(1, 1, .75)
-    love.window.setTitle("Pocket Healer")
+    love.graphics.setBackgroundColor(0,0,0)
+    love.window.setTitle("Tiny X-Com")
+    -- love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
     io.stdout:setvbuf("no")
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
-        vsync = true,
-        resizable = true
+        resizable = true,
+        pixelperfect = true,
+        highdpi = true,
+        canvas = false
     })
 
     gameState.registerEvents()
