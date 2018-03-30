@@ -1,6 +1,7 @@
 Entity = class{
 	init = function(self,x,y,color)
 		self.position = vector.new(x,y)
+		self.tilePos = board:toTilePos(self.position.x, self.position.y)
 		self.moving = false
 		self.width = TILE_SIZE * 0.5
 		self.height = TILE_SIZE * 0.5

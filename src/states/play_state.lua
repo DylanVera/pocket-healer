@@ -4,7 +4,20 @@ function playState:init()
 	board = Board()
     player = Entity(board.position.x + (TILE_SIZE * 1.25), board.position.y + (TILE_SIZE * 1.25), {128, 96, 255})
     enemy = Entity(board.position.x + (TILE_SIZE * 7) + (TILE_SIZE * 0.2), board.position.y + (TILE_SIZE * 7) + (TILE_SIZE * 0.2), {255, 96, 128})
-    --timer.every(1.5, function() MoveCommand(enemy, vector.new(-2,0)):execute() end)
+    
+
+    -- timer.every(1.5, function() s
+    -- 	local moveAmt = love.math.random(-3,3)
+	   --  local moveDir = {}
+	   --  if(love.math.random() > 0.5) then
+	   --  	moveDir = vector.new(moveAmt,0)
+	   --  else
+	   --  	moveDir = vector.new(0, moveAmt)
+	   --  end
+    -- 	MoveCommand(enemy, moveDir):execute() 
+    -- 	end)
+
+    timer.every(1.5, function() MoveCommand(enemy, vector.new(-2,0)):execute() end)
     commands = Queue()
     actionbar = ActionBar(player)
 end
