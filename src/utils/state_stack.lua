@@ -4,6 +4,7 @@ StateStack = class{
 	end
 }
 
+--only update top state on the stack
 function StateStack:update(dt)
     self.states[#self.states]:update(dt)
 end
@@ -12,6 +13,7 @@ function StateStack:processAI(params, dt)
     self.states[#self.states]:processAI(params, dt)
 end
 
+--render states from the bottom up
 function StateStack:render()
     for i, state in ipairs(self.states) do
         state:render()

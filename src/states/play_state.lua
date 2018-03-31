@@ -2,28 +2,25 @@ PlayState = {}
 
 function PlayState:init()
 	board = Board()
-    player = Entity(board.position + Vector.new((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {128, 96, 255})
-    enemy = Entity(board.position + Vector.new((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {255, 96, 128})
+    player = Entity(board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {128, 96, 255})
+    enemy = Entity(board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {255, 96, 128})
     
-    entities = board.entites
-    currentUnit = 1
-
-    --randomly move the enemy around to test movement stuff
-    timer.every(1.5, function()
-    	local moveDir = {}
-    	--repeat
-    	local moveAmt = love.math.random(-3,3)
+  --randomly move the enemy around to test movement stuff
+  --   timer.every(1.5, function()
+  --   	local moveDir = {}
+  --   	--repeat
+  --   	local moveAmt = love.math.random(-6,6)
 	    
-	    if(love.math.random() > 0.5) then
-	    	moveDir = Vector.new(moveAmt,0)
-	    else
-	    	moveDir = Vector.new(0, moveAmt)
-	    end
-		--until board:isValid(enemy.tilePos + moveDir)
-	    MoveCommand(enemy, moveDir):execute() 
-    end)
+	 --    if(love.math.random() > 0.5) then
+	 --    	moveDir = Vector(moveAmt,0)
+	 --    else
+	 --    	moveDir = Vector(0, moveAmt)
+	 --    end
+		-- --until board:isValid(enemy.tilePos + moveDir)
+	 --    MoveCommand(enemy, moveDir):execute() 
+  --   end)
 
-    --timer.every(1.5, function() MoveCommand(enemy, Vector.new(-2,0)):execute() end)
+    --timer.every(1.5, function() MoveCommand(enemy, Vector(-2,0)):execute() end)
     commands = Queue()
     actionbar = ActionBar(player)
 end
@@ -49,16 +46,16 @@ end
 --only push successful movement to commandlist
 function PlayState:keypressed(key)
 	if key == "w" then
-		MoveCommand(player, Vector.new(0,-1)):execute()
+		MoveCommand(player, Vector(0,-1)):execute()
 	end
 	if key == "a" then
-		MoveCommand(player, Vector.new(-1,0)):execute()
+		MoveCommand(player, Vector(-1,0)):execute()
 	end
 	if key == "s" then
-		MoveCommand(player, Vector.new(0,1)):execute()
+		MoveCommand(player, Vector(0,1)):execute()
 	end
 	if key == "d" then
-		MoveCommand(player, Vector.new(1,0)):execute()
+		MoveCommand(player, Vector(1,0)):execute()
 	end
 	-- if key == "z" then
 	-- 	if commands.last >= commands.first then

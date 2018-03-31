@@ -41,10 +41,10 @@ DIR_UP = 1
 DIR_DOWN = 2
 DIR_RIGHT = 3
 DIR_LEFT = 4
-VEC_UP = Vector.new(0, -1)
-VEC_DOWN = Vector.new(0, 1)
-VEC_RIGHT = Vector.new(1, 0)
-VEC_LEFT = Vector.new(-1, 0)
+VEC_UP = Vector(0, -1)
+VEC_DOWN = Vector(0, 1)
+VEC_RIGHT = Vector(1, 0)
+VEC_LEFT = Vector(-1, 0)
 
 DIR_VectorS = {}
 DIR_VectorS[DIR_UP] = VEC_UP

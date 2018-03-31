@@ -10,7 +10,7 @@ MoveCommand = class{
 function MoveCommand:execute()
 	local tilePos = board:toTilePos(self.actor.position + (self.dir * TILE_SIZE))
 	if not self.actor.moving and board:isEmpty(self.actor.tilePos + self.dir) then
-		board.tiles[self.oldPos.y][self.oldPos.x] = " "		
+		board.tiles[self.oldPos.y][self.oldPos.x].entity = nil	
 		print("#commands before: "..commands.last + 1)
 		print("moving to "..tilePos.x..","..tilePos.y)
 		commands:pushRight(self)
@@ -26,7 +26,7 @@ function MoveCommand:execute()
 		:oncomplete(function() 
 			self.actor.moving = false 
 			self.actor.tilePos = self.actor.tilePos + self.dir
-			board.tiles[tilePos.y][tilePos.x] = "*"
+			board.tiles[tilePos.y][tilePos.x].entity = self.actor
 		end)
 	end
 end
@@ -34,6 +34,7 @@ end
 function MoveCommand:undo()
 	local tilePos = board:toTilePos(self.actor.position - (self.dir * TILE_SIZE))
 	if not self.actor.moving and board:isEmpty(self.actor.tilePos - self.dir) then
+		board.tiles[self.actor.tilePos.y][self.actor.tilePos.x].entity = nil	
 		print("#commands before: "..commands.last + 1)
 		print("undoing move from "..tilePos.x..","..tilePos.y)
 		commands:popRight()
@@ -49,7 +50,7 @@ function MoveCommand:undo()
 		:oncomplete(function() 
 			self.actor.moving = false 
 			self.actor.tilePos = self.actor.tilePos + self.dir
-			board.tiles[tilePos.y][tilePos.x] = "*" 
+			board.tiles[tilePos.y][tilePos.x].entity = self.actor
 		end)
 	end
 end

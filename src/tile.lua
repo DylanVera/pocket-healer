@@ -1,9 +1,10 @@
 Tile = class{
 	init = function(self, position, solid, color)
-		self.position = position
+		self.tilePos = position
+		self.center = self.tilePos + Vector(TILE_SIZE/2, TILE_SIZE/2)
 		self.isSolid = solid or false
 		self.effects = {}
-		self.entity = {}	--queue/stack?
+		self.entity = nil	--queue/stack?
 		self.color = color or {128,128,128}
 	end
 }

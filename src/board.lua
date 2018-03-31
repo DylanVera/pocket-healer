@@ -1,20 +1,23 @@
+--1D-array for tiles?
 Board = class{
 	init = function(self)
 		self.entities = {}
-		self.tiles = {
-						{'#', '#', '#', '#', '#', '#', '#', '#', '#'},
-						{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-						{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-						{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-						{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-						{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-						{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-						{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-						{'#', '#', '#', '#', '#', '#', '#', '#', '#'}
-					}
-		self.boardSize = Vector.new(9, 9)
-		self.size = Vector.new(love.graphics.getWidth(), love.graphics.getHeight())
-		self.position = Vector.new(MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y)
+		self.tiles = {}
+					-- 	{'#', '#', '#', '#', '#', '#', '#', '#', '#'},
+					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
+					-- 	{'#', '#', '#', '#', '#', '#', '#', '#', '#'}
+					-- }
+		self.boardSize = Vector(9, 9)
+		self.position = Vector(MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y)
+
+		--init tiles to a square arena
+		self:loadTiles()
 	end
 }
 
@@ -22,12 +25,7 @@ Board = class{
 function Board:draw()
 	for y, row in ipairs(self.tiles) do
 		for x, cell in ipairs(row) do
-			love.graphics.setColor(128,128,128)
-			
-			if(self.tiles[y][x] == "#") then
-				love.graphics.setColor(64,64,64)
-			end
-
+			love.graphics.setColor(self.tiles[y][x].color)
 			love.graphics.rectangle('fill', self.position.x + (x - 1) * TILE_SIZE, self.position.y + (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 			love.graphics.setColor(0, 0, 0)
 			love.graphics.setLineWidth(TILE_SIZE * 0.1)
@@ -37,6 +35,16 @@ function Board:draw()
 end
 
 function Board:loadTiles()
+	for y=1, self.boardSize.y do
+		table.insert(self.tiles, {})
+		for x=1, self.boardSize.x do
+			if x == 1 or y == 1 or y == self.boardSize.y or x == self.boardSize.x then
+				self.tiles[y][x] = Tile(Vector(x,y), true, {64,64,64})
+			else
+				self.tiles[y][x] = Tile(Vector(x,y), false)
+			end
+		end
+	end
 end
 
 function Board:update(dt)
@@ -48,14 +56,11 @@ function Board:reset()
 end
 
 function Board:toWorldPos(tile)
-	return Vector.new(tile.x * TILE_SIZE + self.position.x, tile.y * TILE_SIZE + self.position.y)
+	return Vector(tile.x * TILE_SIZE + self.position.x, tile.y * TILE_SIZE + self.position.y)
 end
 
 function Board:toTilePos(tile)
-	return Vector.new(math.floor((tile.x - self.position.x)/TILE_SIZE) + 1, math.floor((tile.y - self.position.y)/TILE_SIZE) + 1)
-end
-
-function Board:loadTiles()
+	return Vector(math.floor((tile.x - self.position.x)/TILE_SIZE) + 1, math.floor((tile.y - self.position.y)/TILE_SIZE) + 1)
 end
 
 function Board:render()
@@ -74,13 +79,14 @@ end
 function Board:isPawnSpace(tile)
 end
 
---this function really tells us if a space is empty or not
 function Board:isEmpty(tile)
-	return self:isValid(tile) and self.tiles[tile.y][tile.x] == " "
+	return self:isValid(tile) and self:getPawn(tile) == nil and not self.tiles[tile.y][tile.x].isSolid
 end
 
 function Board:getPawn(tile)
-	return self.tiles[tile.y][tile.x] == "*"
+	print("Entity at ("..tile.x..","..tile.y.."):")
+	print(self.tiles[tile.y][tile.x]:getEntity())
+	return self.tiles[tile.y][tile.x]:getEntity()
 end
 
 function Board:isValid(tile)
@@ -89,5 +95,4 @@ function Board:isValid(tile)
 end
 
 function Board:getSimpleReachable(point, pathSize, CornersAllowed)
-
 end

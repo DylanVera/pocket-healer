@@ -1,7 +1,7 @@
 ActionBar = class{
 	init = function(self, actor)
 		self.abilities = {0,0,0,0,0,0}
-		self.position = Vector.new(ACTIONBAR_RENDER_OFFSET_X, ACTIONBAR_RENDER_OFFSET_Y)
+		self.position = Vector(ACTIONBAR_RENDER_OFFSET_X, ACTIONBAR_RENDER_OFFSET_Y)
 		print(self.position.x)
 	end
 }

@@ -1,5 +1,5 @@
 Entity = class{
-	init = function(self, position ,color)
+	init = function(self, position, color)
 		self.position = position
 		self.tilePos = board:toTilePos(self.position)
 		self.moving = false
@@ -21,7 +21,7 @@ Entity = class{
 		self.maxHealth = 5
 		self.health = self.maxHealth
 
-		board.tiles[self.tilePos.y][self.tilePos.x] = "*"
+		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 	end
 }
 
