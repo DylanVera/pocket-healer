@@ -36,6 +36,9 @@ function Board:draw()
 	end
 end
 
+function Board:loadTiles()
+end
+
 function Board:update(dt)
 	--iterate through entities
 end

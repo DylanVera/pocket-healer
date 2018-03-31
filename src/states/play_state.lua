@@ -6,6 +6,7 @@ function PlayState:init()
     enemy = Entity(board.position + Vector.new((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {255, 96, 128})
     
     entities = board.entites
+    currentUnit = 1
 
     --randomly move the enemy around to test movement stuff
     timer.every(1.5, function()
@@ -79,5 +80,5 @@ function PlayState:keypressed(key)
 end
 
 function PlayState:processTurn()
-
+	currentUnit = 0;
 end

@@ -12,6 +12,7 @@ suit = require("src/libs.suit")
 push = require("src/libs.push")
 
 require("src/utils.state_machine")
+require("src/utils.state_stack")
 require("src/utils.queue")
 require("src/pathfinding")
 
