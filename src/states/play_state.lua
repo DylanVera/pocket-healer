@@ -1,21 +1,24 @@
-local playState = {}
+PlayState = {}
 
-function playState:init()
+function PlayState:init()
 	board = Board()
-    player = Entity(board.position.x + (TILE_SIZE * 1.25), board.position.y + (TILE_SIZE * 1.25), {128, 96, 255})
-    enemy = Entity(board.position.x + (TILE_SIZE * 7) + (TILE_SIZE * 0.2), board.position.y + (TILE_SIZE * 7) + (TILE_SIZE * 0.2), {255, 96, 128})
+    player = Entity(board.position + Vector.new((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {128, 96, 255})
+    enemy = Entity(board.position + Vector.new((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {255, 96, 128})
     
+    entities = board.entites
+
+    --randomly move the enemy around to test movement stuff
     timer.every(1.5, function()
     	local moveDir = {}
-    	repeat
-	    	local moveAmt = love.math.random(-3,3)
-		    
-		    if(love.math.random() > 0.5) then
-		    	moveDir = Vector.new(moveAmt,0)
-		    else
-		    	moveDir = Vector.new(0, moveAmt)
-		    end
-		until board:isValid(enemy.tilePos + moveDir)
+    	--repeat
+    	local moveAmt = love.math.random(-3,3)
+	    
+	    if(love.math.random() > 0.5) then
+	    	moveDir = Vector.new(moveAmt,0)
+	    else
+	    	moveDir = Vector.new(0, moveAmt)
+	    end
+		--until board:isValid(enemy.tilePos + moveDir)
 	    MoveCommand(enemy, moveDir):execute() 
     end)
 
@@ -24,13 +27,13 @@ function playState:init()
     actionbar = ActionBar(player)
 end
 
-function playState:enter()
+function PlayState:enter()
 end
 
-function playState:leave()
+function PlayState:leave()
 end
 
-function playState:draw()
+function PlayState:draw()
 	push:start()
 	board:draw()
 	player:draw()
@@ -39,12 +42,11 @@ function playState:draw()
 	push:finish()
 end
 
-function playState:update(dt)
-	actionbar:update(dt)
+function PlayState:update(dt)
 end
 
 --only push successful movement to commandlist
-function playState:keypressed(key)
+function PlayState:keypressed(key)
 	if key == "w" then
 		MoveCommand(player, Vector.new(0,-1)):execute()
 	end
@@ -76,4 +78,6 @@ function playState:keypressed(key)
 	-- end
 end
 
-return playState
+function PlayState:processTurn()
+
+end

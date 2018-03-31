@@ -1,7 +1,20 @@
 TODO:
 =====
---data-driven entities
---ap/turn queue
---Vector params/return values instead of individual components
---refactor entity movement to use tilepos (world pos only for rendering)
---sprite anims
+	Architecture
+	------------
+		-data-driven entities/tiles/props
+
+	Art
+	---
+		-sprite anims
+		-tilemap rendering layers
+
+	Gameplay
+	--------
+		-tile objects/callbacks
+		-props
+		-tile callbacks
+		-ap/turn queue
+		-pathfinding
+		-board state stack
+		-moving should all tiles check path not just target and move as many spaces as possible

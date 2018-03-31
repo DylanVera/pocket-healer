@@ -44,10 +44,6 @@ function Board:reset()
 	self.tiles = {}
 end
 
-function Board:check(tile)
-	return self:isValid(tile) and self.tiles[tile.y][tile.x] == " "
-end
-
 function Board:toWorldPos(tile)
 	return Vector.new(tile.x * TILE_SIZE + self.position.x, tile.y * TILE_SIZE + self.position.y)
 end
@@ -73,6 +69,11 @@ function Board:getSimplePath(p1, p2)
 end
 
 function Board:isPawnSpace(tile)
+end
+
+--this function really tells us if a space is empty or not
+function Board:isEmpty(tile)
+	return self:isValid(tile) and self.tiles[tile.y][tile.x] == " "
 end
 
 function Board:getPawn(tile)

@@ -23,6 +23,3 @@ function ActionBar:draw()
 		love.graphics.print(i, self.position.x + (TILE_SIZE * 0.1) + (i - 1) * TILE_SIZE, self.position.y + (TILE_SIZE * 0.1))
 	end
 end
-
-function ActionBar:update(dt)	
-end

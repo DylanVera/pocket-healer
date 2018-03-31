@@ -1,6 +1,6 @@
 Entity = class{
-	init = function(self,x,y,color)
-		self.position = Vector.new(x,y)
+	init = function(self, position ,color)
+		self.position = position
 		self.tilePos = board:toTilePos(self.position)
 		self.moving = false
 		self.width = TILE_SIZE * 0.5
@@ -35,6 +35,10 @@ end
 
 function Entity:damage(dmg)
     self.health = self.health - dmg
+    if self.health <= 0 then
+    	print("you got dead")
+    	--gameover state
+    end
 end
 
 function Entity:processAI(params, dt)

@@ -13,15 +13,18 @@ push = require("src/libs.push")
 
 require("src/utils.state_machine")
 require("src/utils.queue")
+require("src/pathfinding")
 
 require("src/constants")
 
 require("src/commands.move_command")
 
 --game states
-playState = require("src/states.play_state")
+require("src/states.play_state")
+require("src/states.menu_state")
 
 --entities/game objects
 require("src/board")
+require("src/tile")
 require("src/entity")
 require("src/actionbar")

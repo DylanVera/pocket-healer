@@ -17,7 +17,7 @@ function love.load()
     })
 
     gameState.registerEvents()
-    gameState.switch(playState)   
+    gameState.switch(MenuState)   
 end
 
 function love.update(dt)
