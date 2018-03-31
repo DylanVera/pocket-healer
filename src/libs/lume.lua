@@ -125,7 +125,7 @@ function lume.angle(x1, y1, x2, y2)
 end
 
 
-function lume.vector(angle, magnitude)
+function lume.Vector(angle, magnitude)
   return math.cos(angle) * magnitude, math.sin(angle) * magnitude
 end
 

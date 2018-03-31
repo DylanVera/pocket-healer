@@ -2,4 +2,6 @@ TODO:
 =====
 --data-driven entities
 --ap/turn queue
---pathfinding
+--Vector params/return values instead of individual components
+--refactor entity movement to use tilepos (world pos only for rendering)
+--sprite anims

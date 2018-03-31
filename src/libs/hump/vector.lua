@@ -27,11 +27,11 @@ THE SOFTWARE.
 local assert = assert
 local sqrt, cos, sin, atan2 = math.sqrt, math.cos, math.sin, math.atan2
 
-local vector = {}
-vector.__index = vector
+local Vector = {}
+Vector.__index = Vector
 
 local function new(x,y)
-	return setmetatable({x = x or 0, y = y or 0}, vector)
+	return setmetatable({x = x or 0, y = y or 0}, Vector)
 end
 local zero = new(0,0)
 
@@ -51,96 +51,96 @@ local function randomDirection(len_min, len_max)
 	                 math.random() * (len_max-len_min) + len_min)
 end
 
-local function isvector(v)
+local function isVector(v)
 	return type(v) == 'table' and type(v.x) == 'number' and type(v.y) == 'number'
 end
 
-function vector:clone()
+function Vector:clone()
 	return new(self.x, self.y)
 end
 
-function vector:unpack()
+function Vector:unpack()
 	return self.x, self.y
 end
 
-function vector:__tostring()
+function Vector:__tostring()
 	return "("..tonumber(self.x)..","..tonumber(self.y)..")"
 end
 
-function vector.__unm(a)
+function Vector.__unm(a)
 	return new(-a.x, -a.y)
 end
 
-function vector.__add(a,b)
-	assert(isvector(a) and isvector(b), "Add: wrong argument types (<vector> expected)")
+function Vector.__add(a,b)
+	assert(isVector(a) and isVector(b), "Add: wrong argument types (<Vector> expected)")
 	return new(a.x+b.x, a.y+b.y)
 end
 
-function vector.__sub(a,b)
-	assert(isvector(a) and isvector(b), "Sub: wrong argument types (<vector> expected)")
+function Vector.__sub(a,b)
+	assert(isVector(a) and isVector(b), "Sub: wrong argument types (<Vector> expected): ")
 	return new(a.x-b.x, a.y-b.y)
 end
 
-function vector.__mul(a,b)
+function Vector.__mul(a,b)
 	if type(a) == "number" then
 		return new(a*b.x, a*b.y)
 	elseif type(b) == "number" then
 		return new(b*a.x, b*a.y)
 	else
-		assert(isvector(a) and isvector(b), "Mul: wrong argument types (<vector> or <number> expected)")
+		assert(isVector(a) and isVector(b), "Mul: wrong argument types (<Vector> or <number> expected)")
 		return a.x*b.x + a.y*b.y
 	end
 end
 
-function vector.__div(a,b)
-	assert(isvector(a) and type(b) == "number", "wrong argument types (expected <vector> / <number>)")
+function Vector.__div(a,b)
+	assert(isVector(a) and type(b) == "number", "wrong argument types (expected <Vector> / <number>)")
 	return new(a.x / b, a.y / b)
 end
 
-function vector.__eq(a,b)
+function Vector.__eq(a,b)
 	return a.x == b.x and a.y == b.y
 end
 
-function vector.__lt(a,b)
+function Vector.__lt(a,b)
 	return a.x < b.x or (a.x == b.x and a.y < b.y)
 end
 
-function vector.__le(a,b)
+function Vector.__le(a,b)
 	return a.x <= b.x and a.y <= b.y
 end
 
-function vector.permul(a,b)
-	assert(isvector(a) and isvector(b), "permul: wrong argument types (<vector> expected)")
+function Vector.permul(a,b)
+	assert(isVector(a) and isVector(b), "permul: wrong argument types (<Vector> expected)")
 	return new(a.x*b.x, a.y*b.y)
 end
 
-function vector:toPolar()
+function Vector:toPolar()
 	return new(atan2(self.x, self.y), self:len())
 end
 
-function vector:len2()
+function Vector:len2()
 	return self.x * self.x + self.y * self.y
 end
 
-function vector:len()
+function Vector:len()
 	return sqrt(self.x * self.x + self.y * self.y)
 end
 
-function vector.dist(a, b)
-	assert(isvector(a) and isvector(b), "dist: wrong argument types (<vector> expected)")
+function Vector.dist(a, b)
+	assert(isVector(a) and isVector(b), "dist: wrong argument types (<Vector> expected)")
 	local dx = a.x - b.x
 	local dy = a.y - b.y
 	return sqrt(dx * dx + dy * dy)
 end
 
-function vector.dist2(a, b)
-	assert(isvector(a) and isvector(b), "dist: wrong argument types (<vector> expected)")
+function Vector.dist2(a, b)
+	assert(isVector(a) and isVector(b), "dist: wrong argument types (<Vector> expected)")
 	local dx = a.x - b.x
 	local dy = a.y - b.y
 	return (dx * dx + dy * dy)
 end
 
-function vector:normalizeInplace()
+function Vector:normalizeInplace()
 	local l = self:len()
 	if l > 0 then
 		self.x, self.y = self.x / l, self.y / l
@@ -148,60 +148,60 @@ function vector:normalizeInplace()
 	return self
 end
 
-function vector:normalized()
+function Vector:normalized()
 	return self:clone():normalizeInplace()
 end
 
-function vector:rotateInplace(phi)
+function Vector:rotateInplace(phi)
 	local c, s = cos(phi), sin(phi)
 	self.x, self.y = c * self.x - s * self.y, s * self.x + c * self.y
 	return self
 end
 
-function vector:rotated(phi)
+function Vector:rotated(phi)
 	local c, s = cos(phi), sin(phi)
 	return new(c * self.x - s * self.y, s * self.x + c * self.y)
 end
 
-function vector:perpendicular()
+function Vector:perpendicular()
 	return new(-self.y, self.x)
 end
 
-function vector:projectOn(v)
-	assert(isvector(v), "invalid argument: cannot project vector on " .. type(v))
+function Vector:projectOn(v)
+	assert(isVector(v), "invalid argument: cannot project Vector on " .. type(v))
 	-- (self * v) * v / v:len2()
 	local s = (self.x * v.x + self.y * v.y) / (v.x * v.x + v.y * v.y)
 	return new(s * v.x, s * v.y)
 end
 
-function vector:mirrorOn(v)
-	assert(isvector(v), "invalid argument: cannot mirror vector on " .. type(v))
+function Vector:mirrorOn(v)
+	assert(isVector(v), "invalid argument: cannot mirror Vector on " .. type(v))
 	-- 2 * self:projectOn(v) - self
 	local s = 2 * (self.x * v.x + self.y * v.y) / (v.x * v.x + v.y * v.y)
 	return new(s * v.x - self.x, s * v.y - self.y)
 end
 
-function vector:cross(v)
-	assert(isvector(v), "cross: wrong argument types (<vector> expected)")
+function Vector:cross(v)
+	assert(isVector(v), "cross: wrong argument types (<Vector> expected)")
 	return self.x * v.y - self.y * v.x
 end
 
 -- ref.: http://blog.signalsondisplay.com/?p=336
-function vector:trimInplace(maxLen)
+function Vector:trimInplace(maxLen)
 	local s = maxLen * maxLen / self:len2()
 	s = (s > 1 and 1) or math.sqrt(s)
 	self.x, self.y = self.x * s, self.y * s
 	return self
 end
 
-function vector:angleTo(other)
+function Vector:angleTo(other)
 	if other then
 		return atan2(self.y, self.x) - atan2(other.y, other.x)
 	end
 	return atan2(self.y, self.x)
 end
 
-function vector:trimmed(maxLen)
+function Vector:trimmed(maxLen)
 	return self:clone():trimInplace(maxLen)
 end
 
@@ -211,7 +211,7 @@ return setmetatable({
 	new             = new,
 	fromPolar       = fromPolar,
 	randomDirection = randomDirection,
-	isvector        = isvector,
+	isVector        = isVector,
 	zero            = zero
 }, {
 	__call = function(_, ...) return new(...) end

@@ -3,6 +3,7 @@ require("src.dependencies")
 function love.load()
     love.graphics.setBackgroundColor(0,0,0)
     love.window.setTitle("Tiny X-Com")
+
     -- love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
     io.stdout:setvbuf("no")

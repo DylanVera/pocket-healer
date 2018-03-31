@@ -1,7 +1,7 @@
 Entity = class{
 	init = function(self,x,y,color)
-		self.position = vector.new(x,y)
-		self.tilePos = board:toTilePos(self.position.x, self.position.y)
+		self.position = Vector.new(x,y)
+		self.tilePos = board:toTilePos(self.position)
 		self.moving = false
 		self.width = TILE_SIZE * 0.5
 		self.height = TILE_SIZE * 0.5
@@ -21,7 +21,6 @@ Entity = class{
 		self.maxHealth = 5
 		self.health = self.maxHealth
 
-		self.tilePos = board:toTilePos(x,y)
 		board.tiles[self.tilePos.y][self.tilePos.x] = "*"
 	end
 }

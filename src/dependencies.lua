@@ -1,7 +1,7 @@
 gameState = require("src/libs.hump.gamestate")
 behavior = require("src/libs.knife.behavior")
 signal = require("src/libs.hump.signal")
-vector = require("src/libs.hump.vector")
+Vector = require("src/libs.hump.vector")
 event = require("src/libs.knife.event")
 class = require("src/libs.hump.class")
 timer = require("src/libs.hump.timer")
