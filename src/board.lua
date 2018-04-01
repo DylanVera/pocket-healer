@@ -73,7 +73,38 @@ end
 function Board:isBlocked(target, path)
 end
 
+--BFS
 function Board:getSimplePath(p1, p2)
+	local frontier = Queue()
+	local goal = p2.tilePos
+	frontier:pushRight(p1)
+	cameFrom = {}
+	--cameFrom[1] = nil
+
+	while not frontier:isEmpty() do
+		current = frontier:popRight()
+		
+		if current.tilePos == goal then
+			print("goal reached")
+			break
+		end
+
+		local neighbors = self:getNeighbors(current.tilePos)
+		for i, n in ipairs(neighbors) do
+			local visited = false
+			for j, t in ipairs(cameFrom) do
+				if t.tilePos == n.tilePos then
+					visited = true
+				end
+			end		
+			if not visited then
+				frontier:pushRight(n)
+				table.insert(cameFrom,current) 
+			end
+		end
+	end	
+
+	return cameFrom
 end
 
 function Board:isPawnSpace(tile)
@@ -90,9 +121,26 @@ function Board:getPawn(tile)
 end
 
 function Board:isValid(tile)
-	--account for edge tiles in array
-	return tile.x <= #self.tiles[1] - 1 and tile.x > 1 and tile.y <= #self.tiles - 1 and tile.y > 1
+	return tile.x < #self.tiles[1] and tile.x > 1 and tile.y < #self.tiles  and tile.y > 1
 end
 
 function Board:getSimpleReachable(point, pathSize, CornersAllowed)
+end
+
+function Board:getNeighbors(tile)
+	local neighbors = {
+						self.tiles[tile.y+1][tile.x],
+						self.tiles[tile.y-1][tile.x],
+						self.tiles[tile.y][tile.x+1],
+						self.tiles[tile.y][tile.x-1]
+					}
+
+	--filter out walls and invalid stuff
+	for n=#neighbors, 1, -1 do
+		if not self:isValid(neighbors[n].tilePos) then
+			table.remove(neighbors, n)
+		end
+	end
+
+	return neighbors
 end

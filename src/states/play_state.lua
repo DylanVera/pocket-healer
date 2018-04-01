@@ -41,21 +41,34 @@ function PlayState:draw()
 end
 
 function PlayState:update(dt)
+	if suit.Button("neighbors", TILE_SIZE, TILE_SIZE, TILE_SIZE * 2.5, TILE_SIZE).hit then
+    	local neighbors = board:getNeighbors(player.tilePos)
+    	for i,n in ipairs(neighbors) do
+    		n.color = {255,64,96}
+    	end	
+    end
+
+    if suit.Button("path", TILE_SIZE, TILE_SIZE*2.5, TILE_SIZE * 2.5, TILE_SIZE).hit then
+    	local neighbors = board:getSimplePath(player, enemy)
+    	for i,n in ipairs(neighbors) do
+    		n.color = {255,64,255}
+    	end	
+    end
 end
 
 --only push successful movement to commandlist
 function PlayState:keypressed(key)
 	if key == "w" then
-		MoveCommand(player, Vector(0,-1)):execute()
+		MoveCommand(player, VEC_UP):execute()
 	end
 	if key == "a" then
-		MoveCommand(player, Vector(-1,0)):execute()
+		MoveCommand(player, VEC_LEFT):execute()
 	end
 	if key == "s" then
-		MoveCommand(player, Vector(0,1)):execute()
+		MoveCommand(player, VEC_DOWN):execute()
 	end
 	if key == "d" then
-		MoveCommand(player, Vector(1,0)):execute()
+		MoveCommand(player, VEC_RIGHT):execute()
 	end
 	-- if key == "z" then
 	-- 	if commands.last >= commands.first then

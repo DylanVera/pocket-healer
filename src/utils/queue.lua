@@ -5,13 +5,13 @@ Queue = class{
 	end
 }
 
-function Queue:pushLeft ( value)
+function Queue:pushLeft(value)
 	local first = self.first - 1
 	self.first = first
 	self[first] = value
 end
 
-function Queue:pushRight ( value)
+function Queue:pushRight(value)
 	local last = self.last + 1
 	self.last = last
 	self[last] = value
@@ -26,11 +26,15 @@ function Queue:popLeft ()
 	return value
 end
 
-function Queue:popRight ()
+function Queue:popRight()
 	local last = self.last
 	if self.first > last then error("list is empty") end
 	local value = self[last]
 	self[last] = nil         -- to allow garbage collection
 	self.last = last - 1
 	return value
+end
+
+function Queue:isEmpty()
+	return self.first > self.last
 end
