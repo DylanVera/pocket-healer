@@ -78,7 +78,7 @@ function PlayState:keypressed(key)
 	-- 	end
 	-- end
 
-	-- --be able to undo redo
+	-- --be able to undo a redo
 	-- if key == "r" then
 	-- 	if commands.last >= commands.first then
 	-- 		player.position = board:toWorldPos(commands[commands.first].oldPos)

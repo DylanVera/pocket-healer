@@ -77,37 +77,41 @@ end
 function Board:getSimplePath(p1, p2)
 	local frontier = Queue()
 	local goal = p2.tilePos
-	frontier:pushRight(p1)
-	cameFrom = {}
+	frontier:pushRight(board:getTile(p1.tilePos))
+	visited = {}
 	--cameFrom[1] = nil
 
 	while not frontier:isEmpty() do
-		current = frontier:popRight()
+		current = frontier:popLeft()
 		
 		if current.tilePos == goal then
 			print("goal reached")
-			break
+			table.insert(visited, board:getTile(goal))
+			return visited
 		end
 
 		local neighbors = self:getNeighbors(current.tilePos)
 		for i, n in ipairs(neighbors) do
-			local visited = false
-			for j, t in ipairs(cameFrom) do
-				if t.tilePos == n.tilePos then
-					visited = true
-				end
+			local v = false
+			for j, t in ipairs(visited) do
+				v = t.tilePos == n.tilePos
 			end		
-			if not visited then
+			if not v then
 				frontier:pushRight(n)
-				table.insert(cameFrom,current) 
+				table.insert(visited, current)
 			end
-		end
-	end	
+		end	
+	end
 
-	return cameFrom
+	print("no path found")
+	return {}
 end
 
 function Board:isPawnSpace(tile)
+end
+
+function Board:getTile(tile)
+	return self.tiles[tile.y][tile.x]
 end
 
 function Board:isEmpty(tile)
@@ -143,4 +147,7 @@ function Board:getNeighbors(tile)
 	end
 
 	return neighbors
+end
+
+function Board:manhattan(p1,p2)
 end

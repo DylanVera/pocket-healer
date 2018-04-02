@@ -49,7 +49,7 @@ function MoveCommand:undo()
 			})
 		:oncomplete(function() 
 			self.actor.moving = false 
-			self.actor.tilePos = self.actor.tilePos + self.dir
+			self.actor.tilePos = self.actor.tilePos - self.dir
 			board.tiles[tilePos.y][tilePos.x].entity = self.actor
 		end)
 	end
