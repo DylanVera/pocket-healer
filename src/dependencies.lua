@@ -11,10 +11,10 @@ flux = require("src/libs.flux")
 suit = require("src/libs.suit")
 push = require("src/libs.push")
 
+inspect = require("src/libs.inspect")
+
 require("src/utils.state_machine")
 require("src/utils.state_stack")
-require("src/utils.queue")
-require("src/pathfinding")
 
 require("src/constants")
 

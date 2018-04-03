@@ -21,7 +21,7 @@ function PlayState:init()
   --   end)
 
     --timer.every(1.5, function() MoveCommand(enemy, Vector(-2,0)):execute() end)
-    commands = Queue()
+    commands = {}
     actionbar = ActionBar(player)
 end
 
@@ -70,13 +70,14 @@ function PlayState:keypressed(key)
 	if key == "d" then
 		MoveCommand(player, VEC_RIGHT):execute()
 	end
-	-- if key == "z" then
-	-- 	if commands.last >= commands.first then
-	-- 		commands[commands.last]:undo()
-	-- 	else
-	-- 		print("no commands to undo")
-	-- 	end
-	-- end
+
+	if key == "z" then
+		if #commands > 0 then
+			commands[#commands]:undo()
+		else
+			print("no commands to undo")
+		end
+	end
 
 	-- --be able to undo a redo
 	-- if key == "r" then
@@ -87,6 +88,13 @@ function PlayState:keypressed(key)
 	-- 		print("no commands to undo")
 	-- 	end
 	-- end
+end
+
+function PlayState:mousepressed(x, y, button, istouch)
+	if button == 2 then
+		local tile = board:getTile(board:toTilePos(Vector(x/2,y/2)))
+		tile:toggleSolid()
+	end
 end
 
 function PlayState:processTurn()

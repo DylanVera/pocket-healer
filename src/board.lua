@@ -75,18 +75,18 @@ end
 
 --BFS
 function Board:getSimplePath(p1, p2)
-	local frontier = Queue()
+	local frontier = {}
 	local goal = p2.tilePos
-	frontier:pushRight(board:getTile(p1.tilePos))
+	table.insert(frontier, board:getTile(p1.tilePos))
 	visited = {}
-	--cameFrom[1] = nil
+	path = {}
 
-	while not frontier:isEmpty() do
-		current = frontier:popLeft()
-		
+	while #frontier > 0 do
+		print("# to explore: "..#frontier.." vs. # explored: "..#visited)
+		current = table.remove(frontier, 1)
 		if current.tilePos == goal then
 			print("goal reached")
-			table.insert(visited, board:getTile(goal))
+			table.insert(visited, current)
 			return visited
 		end
 
@@ -97,10 +97,11 @@ function Board:getSimplePath(p1, p2)
 				v = t.tilePos == n.tilePos
 			end		
 			if not v then
-				frontier:pushRight(n)
-				table.insert(visited, current)
+				table.insert(frontier, n)
+				table.insert(visited, n)
 			end
 		end	
+
 	end
 
 	print("no path found")
@@ -119,13 +120,16 @@ function Board:isEmpty(tile)
 end
 
 function Board:getPawn(tile)
-	print("Entity at ("..tile.x..","..tile.y.."):")
-	print(self.tiles[tile.y][tile.x]:getEntity())
-	return self.tiles[tile.y][tile.x]:getEntity()
+	local entity = self.tiles[tile.y][tile.x]:getEntity()
+	if entity ~= nil then
+		print("Entity at ("..tile.x..","..tile.y.."):")
+		print(entity)
+		return entity
+	end
 end
 
 function Board:isValid(tile)
-	return tile.x < #self.tiles[1] and tile.x > 1 and tile.y < #self.tiles  and tile.y > 1
+	return tile.x <= #self.tiles[1] and tile.x > 0 and tile.y <= #self.tiles  and tile.y > 0
 end
 
 function Board:getSimpleReachable(point, pathSize, CornersAllowed)
@@ -141,7 +145,7 @@ function Board:getNeighbors(tile)
 
 	--filter out walls and invalid stuff
 	for n=#neighbors, 1, -1 do
-		if not self:isValid(neighbors[n].tilePos) then
+		if not self:isValid(neighbors[n].tilePos) or neighbors[n].isSolid then
 			table.remove(neighbors, n)
 		end
 	end
