@@ -18,6 +18,8 @@ require("src/utils.state_stack")
 
 require("src/constants")
 
+require("src/animation")
+
 require("src/commands.move_command")
 
 --game states
