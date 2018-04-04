@@ -50,9 +50,9 @@ function PlayState:update(dt)
 
     if suit.Button("path", TILE_SIZE, TILE_SIZE*2.5, TILE_SIZE * 2.5, TILE_SIZE).hit then
     	local neighbors = board:getSimplePath(player, enemy)
-    	for i,n in ipairs(neighbors) do
-    		n.color = {255,64,255}
-    	end	
+    	-- for i,n in ipairs(neighbors) do
+    	-- 	n.color = {255,64,255}
+    	-- end	
     end
 end
 
@@ -78,6 +78,13 @@ function PlayState:keypressed(key)
 			print("no commands to undo")
 		end
 	end
+
+	if key == "space" then
+    	local neighbors = board:getNeighbors(player.tilePos)
+    	for i,n in ipairs(neighbors) do
+    		n.color = {255,64,96}
+    	end	
+    end
 
 	-- --be able to undo a redo
 	-- if key == "r" then

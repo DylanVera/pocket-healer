@@ -22,6 +22,7 @@ Entity = class{
 		self.health = self.maxHealth
 
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
+		board.tiles[self.tilePos.y][self.tilePos.x].color = self.color
 	end
 }
 

@@ -11,6 +11,7 @@ function MoveCommand:execute()
 	local tilePos = board:toTilePos(self.actor.position + (self.dir * TILE_SIZE))
 	if not self.actor.moving and board:isEmpty(self.actor.tilePos + self.dir) then
 		board.tiles[self.oldPos.y][self.oldPos.x].entity = nil	
+		board.tiles[tilePos.y][tilePos.x].color = self.actor.color
 		print("#commands before: "..#commands)
 		print("moving to "..tilePos.x..","..tilePos.y)
 		table.insert(commands, self)

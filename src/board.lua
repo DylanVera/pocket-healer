@@ -48,7 +48,6 @@ function Board:loadTiles()
 end
 
 function Board:update(dt)
-	--iterate through entities
 end
 
 function Board:reset()
@@ -92,16 +91,18 @@ function Board:getSimplePath(p1, p2)
 
 		local neighbors = self:getNeighbors(current.tilePos)
 		for i, n in ipairs(neighbors) do
-			local v = false
+			local v
 			for j, t in ipairs(visited) do
-				v = t.tilePos == n.tilePos
-			end		
+				v = t.tilePos == n.tilePos or current.tilePos == t.tilePos
+			end	
+	
 			if not v then
 				table.insert(frontier, n)
-				table.insert(visited, n)
+				n.color = {64, 255, 255}
+				table.insert(visited, current)
+				current.color = {196,64,255}
 			end
 		end	
-
 	end
 
 	print("no path found")
