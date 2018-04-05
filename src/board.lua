@@ -116,7 +116,9 @@ function Board:isPawnSpace(tile)
 end
 
 function Board:getTile(tile)
-	return self.tiles[tile.y][tile.x]
+	if self:isValid(tile) then
+		return self.tiles[tile.y][tile.x]
+	end
 end
 
 function Board:isEmpty(tile)

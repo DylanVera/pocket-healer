@@ -89,8 +89,11 @@ end
 
 function PlayState:mousepressed(x, y, button, istouch)
 	if button == 2 then
-		local tile = board:getTile(board:toTilePos(Vector(x/2,y/2)))
-		tile:toggleSolid()
+		local nx, ny = push:toGame(x,y)
+		local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
+		if tile ~= nil then
+			tile:toggleSolid()
+		end
 	end
 end
 
