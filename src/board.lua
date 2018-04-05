@@ -75,32 +75,36 @@ end
 --BFS
 function Board:getSimplePath(p1, p2)
 	local frontier = {}
-	local goal = p2.tilePos
-	table.insert(frontier, board:getTile(p1.tilePos))
+	local goal = self:getTile(p2.tilePos)
+	table.insert(frontier, self:getTile(p1.tilePos))
 	visited = {}
-	path = {}
+	cameFrom = {}
 
 	while #frontier > 0 do
 		print("# to explore: "..#frontier.." vs. # explored: "..#visited)
 		current = table.remove(frontier, 1)
-		if current.tilePos == goal then
+		--current.color = {255, 128, 255}
+		if current == goal then
 			print("goal reached")
-			table.insert(visited, current)
-			return visited
+			--goal.color = {98, 255, 128}
+			--build the path
+			current = goal 
+			path = {}
+			while current ~= self:getTile(p1.tilePos) do
+			   table.insert(path, current)
+			   current = cameFrom[current]
+			end
+			
+			return path
 		end
 
 		local neighbors = self:getNeighbors(current.tilePos)
 		for i, n in ipairs(neighbors) do
-			local v
-			for j, t in ipairs(visited) do
-				v = t.tilePos == n.tilePos or current.tilePos == t.tilePos
-			end	
-	
-			if not v then
+			if not visited[n] then
 				table.insert(frontier, n)
-				n.color = {64, 255, 255}
-				table.insert(visited, current)
-				current.color = {196,64,255}
+				visited[n] = true
+				cameFrom[n] = current
+				--n.color = {64, 255, 255}	
 			end
 		end	
 	end

@@ -36,6 +36,7 @@ function MoveCommand:undo()
 	local tilePos = board:toTilePos(self.actor.position - (self.dir * TILE_SIZE))
 	if not self.actor.moving and board:isEmpty(self.actor.tilePos - self.dir) then
 		board.tiles[self.actor.tilePos.y][self.actor.tilePos.x].entity = nil	
+		board.tiles[self.actor.tilePos.y][self.actor.tilePos.x].color = {128,128,128}
 		print("#commands before: "..#commands)
 		print("undoing move from "..tilePos.x..","..tilePos.y)
 		table.remove(commands, #commands)

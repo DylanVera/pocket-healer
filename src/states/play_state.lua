@@ -49,10 +49,10 @@ function PlayState:update(dt)
     end
 
     if suit.Button("path", TILE_SIZE, TILE_SIZE*2.5, TILE_SIZE * 2.5, TILE_SIZE).hit then
-    	local neighbors = board:getSimplePath(player, enemy)
-    	-- for i,n in ipairs(neighbors) do
-    	-- 	n.color = {255,64,255}
-    	-- end	
+    	local path = board:getSimplePath(player, enemy)
+    	for i,n in ipairs(path) do
+    		n.color = {255,64,255}
+    	end	
     end
 end
 

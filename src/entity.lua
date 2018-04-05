@@ -15,7 +15,7 @@ Entity = class{
 	    -- self.state:change('start')
 		self.moveSpeed = 0.25
 		self.abilities = {}
-		self.animations = self:createAnimations()
+		self.animations = {}--self:createAnimations()
 		self.maxAp = 5
 		self.ap = self.maxAp
 		self.maxHealth = 5
