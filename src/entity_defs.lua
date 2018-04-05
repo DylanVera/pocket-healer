@@ -12,9 +12,8 @@ ENTITY_IDS = {
 ENTITY_DEFS = {
     ['player'] = {
         name = 'player',
-        battleSpriteFront = 'aardart-front',
-        battleSpriteBack = 'aardart-back',
+        sprite = '',
         animations = {},
-        baseHP = 14,
+        color = {128, 96, 255}
     }
 }

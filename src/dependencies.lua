@@ -10,6 +10,7 @@ lume = require("src/libs.lume")
 flux = require("src/libs.flux")
 suit = require("src/libs.suit")
 push = require("src/libs.push")
+lue = require("src/libs.lue")
 
 inspect = require("src/libs.inspect")
 
@@ -17,6 +18,8 @@ require("src/utils.state_machine")
 require("src/utils.state_stack")
 
 require("src/constants")
+require("src/entity_defs")
+require("src/object_defs")
 
 require("src/animation")
 

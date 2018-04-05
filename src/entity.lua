@@ -18,7 +18,7 @@ Entity = class{
 		self.animations = {}--self:createAnimations()
 		self.maxAp = 5
 		self.ap = self.maxAp
-		self.maxHealth = 5
+		self.maxHealth = 3
 		self.health = self.maxHealth
 
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self

@@ -6,6 +6,7 @@ Tile = class{
 		self.effects = {}
 		self.entity = nil	--queue/stack?
 		self.color = color or {128,128,128}
+		self.onEnter = function() end
 	end
 }
 

@@ -5,22 +5,6 @@ function PlayState:init()
     player = Entity(board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {128, 96, 255})
     enemy = Entity(board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {255, 96, 128})
     
-  --randomly move the enemy around to test movement stuff
-  --   timer.every(1.5, function()
-  --   	local moveDir = {}
-  --   	--repeat
-  --   	local moveAmt = love.math.random(-6,6)
-	    
-	 --    if(love.math.random() > 0.5) then
-	 --    	moveDir = Vector(moveAmt,0)
-	 --    else
-	 --    	moveDir = Vector(0, moveAmt)
-	 --    end
-		-- --until board:isValid(enemy.tilePos + moveDir)
-	 --    MoveCommand(enemy, moveDir):execute() 
-  --   end)
-
-    --timer.every(1.5, function() MoveCommand(enemy, Vector(-2,0)):execute() end)
     commands = {}
     actionbar = ActionBar(player)
 end
@@ -53,6 +37,12 @@ function PlayState:update(dt)
     	for i,n in ipairs(path) do
     		n.color = {255,64,255}
     	end	
+    end
+
+    if suit.Button("AI move", TILE_SIZE, TILE_SIZE*4, TILE_SIZE*2.5, TILE_SIZE).hit then
+    	local path = board:getSimplePath(enemy, player)
+    	local moveDir = table.remove(path).tilePos - enemy.tilePos
+    	MoveCommand(enemy, moveDir):execute()
     end
 end
 

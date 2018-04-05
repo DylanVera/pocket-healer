@@ -81,12 +81,10 @@ function Board:getSimplePath(p1, p2)
 	cameFrom = {}
 
 	while #frontier > 0 do
-		print("# to explore: "..#frontier.." vs. # explored: "..#visited)
 		current = table.remove(frontier, 1)
-		--current.color = {255, 128, 255}
+
 		if current == goal then
-			print("goal reached")
-			--goal.color = {98, 255, 128}
+			print("goal reached")	
 			--build the path
 			current = goal 
 			path = {}
@@ -94,7 +92,8 @@ function Board:getSimplePath(p1, p2)
 			   table.insert(path, current)
 			   current = cameFrom[current]
 			end
-			
+			--goal.color = {98, 255, 128}
+			print("Path found: "..#path.." moves")
 			return path
 		end
 
