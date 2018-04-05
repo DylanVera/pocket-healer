@@ -15,7 +15,7 @@ Entity = class{
 	    -- self.state:change('start')
 		self.moveSpeed = 0.25
 		self.abilities = {}
-		self.animations = {}
+		self.animations = self:createAnimations()
 		self.maxAp = 5
 		self.ap = self.maxAp
 		self.maxHealth = 5
@@ -25,6 +25,20 @@ Entity = class{
 		board.tiles[self.tilePos.y][self.tilePos.x].color = self.color
 	end
 }
+
+function Entity:createAnimations(animations)
+    local animationsReturned = {}
+
+    for k, animationDef in pairs(animations) do
+        animationsReturned[k] = Animation {
+            texture = animationDef.texture or 'entities',
+            frames = animationDef.frames,
+            interval = animationDef.interval
+        }
+    end
+
+    return animationsReturned
+end
 
 -- function Entity:changeState(name)
 --     --self.state:change(name)
