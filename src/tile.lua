@@ -7,13 +7,16 @@ Tile = class{
 		self.entity = nil	--queue/stack?
 		self.color = color or {128,128,128}
 		self.onEnter = function() end
+		self.prop = nil
 	end
 }
 
 function Tile:getEntity()
-	if self.entity ~= nil then
-		return self.entity
-	end
+	return self.entity
+end
+
+function Tile:getProp()
+	return self.prop
 end
 
 function Tile:getEffect()

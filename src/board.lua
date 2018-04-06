@@ -3,21 +3,11 @@ Board = class{
 	init = function(self)
 		self.entities = {}
 		self.tiles = {}
-					-- 	{'#', '#', '#', '#', '#', '#', '#', '#', '#'},
-					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-					-- 	{'#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'},
-					-- 	{'#', '#', '#', '#', '#', '#', '#', '#', '#'}
-					-- }
+		
 		self.boardSize = Vector(9, 9)
 		self.position = Vector(MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y)
 
-		--init tiles to a square arena
-		self:loadTiles()
+		self:loadTestMap()
 	end
 }
 
@@ -34,7 +24,7 @@ function Board:draw()
 	end
 end
 
-function Board:loadTiles()
+function Board:loadTestMap()
 	for y=1, self.boardSize.y do
 		table.insert(self.tiles, {})
 		for x=1, self.boardSize.x do
@@ -97,9 +87,10 @@ function Board:getSimplePath(p1, p2)
 			return path
 		end
 
+		--filter tiles with people on them
 		local neighbors = self:getNeighbors(current.tilePos)
 		for i, n in ipairs(neighbors) do
-			if not visited[n] then
+			if not visited[n] and n:getProp() == nil then
 				table.insert(frontier, n)
 				visited[n] = true
 				cameFrom[n] = current
@@ -112,17 +103,21 @@ function Board:getSimplePath(p1, p2)
 	return {}
 end
 
+--highlight reachable spaces for movement/targeting
+function Board:getSimpleReachable(point, pathSize)
+end
+
 function Board:isPawnSpace(tile)
 end
 
 function Board:getTile(tile)
-	if self:isValid(tile) then
+	if self:isInBounds(tile) then
 		return self.tiles[tile.y][tile.x]
 	end
 end
 
 function Board:isEmpty(tile)
-	return self:isValid(tile) and self:getPawn(tile) == nil and not self.tiles[tile.y][tile.x].isSolid
+	return self:isInBounds(tile) and self:getPawn(tile) == nil and not self.tiles[tile.y][tile.x].isSolid
 end
 
 function Board:getPawn(tile)
@@ -134,11 +129,8 @@ function Board:getPawn(tile)
 	end
 end
 
-function Board:isValid(tile)
+function Board:isInBounds(tile)
 	return tile.x <= #self.tiles[1] and tile.x > 0 and tile.y <= #self.tiles  and tile.y > 0
-end
-
-function Board:getSimpleReachable(point, pathSize, CornersAllowed)
 end
 
 function Board:getNeighbors(tile)
@@ -151,7 +143,7 @@ function Board:getNeighbors(tile)
 
 	--filter out walls and invalid stuff
 	for n=#neighbors, 1, -1 do
-		if not self:isValid(neighbors[n].tilePos) or neighbors[n].isSolid then
+		if not self:isInBounds(neighbors[n].tilePos) or neighbors[n].isSolid then
 			table.remove(neighbors, n)
 		end
 	end
@@ -160,4 +152,5 @@ function Board:getNeighbors(tile)
 end
 
 function Board:manhattan(p1,p2)
+	return math.abs(p1.x - p2.x) + math.abs(p1.y - p2.y)
 end

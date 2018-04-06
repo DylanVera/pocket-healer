@@ -14,13 +14,14 @@ Entity = class{
 
 	    -- self.state:change('start')
 		self.moveSpeed = 0.25
+		self.moveRange = 4
 		self.abilities = {}
 		self.animations = {}--self:createAnimations()
 		self.maxAp = 5
 		self.ap = self.maxAp
 		self.maxHealth = 3
 		self.health = self.maxHealth
-
+		self.onCollide = function() end
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 		board.tiles[self.tilePos.y][self.tilePos.x].color = self.color
 	end
@@ -66,4 +67,9 @@ function Entity:draw()
 	love.graphics.setColor(0,0,0)
 	love.graphics.setLineWidth(self.width * 0.1)
 	love.graphics.rectangle("line", self.position.x, self.position.y, self.width, self.height)
+end
+
+--chceck move is valid
+function Entity:move(dir)
+	MoveCommand(self, dir):execute()
 end

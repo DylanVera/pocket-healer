@@ -6,7 +6,8 @@
 ]]
 
 ENTITY_IDS = {
-    'player'
+    'player',
+    'testEnemy'
 }
 
 ENTITY_DEFS = {
@@ -15,5 +16,9 @@ ENTITY_DEFS = {
         sprite = '',
         animations = {},
         color = {128, 96, 255}
+    },
+    ['testEnemy'] = {
+        name = 'enemy',
+        color = {255, 96, 128}
     }
 }

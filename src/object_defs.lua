@@ -1,19 +1,12 @@
 GAME_OBJECT_DEFS = {
-    ['switch'] = {
+    ['box'] = {
         type = 'switch',
         texture = 'switches',
         frame = 2,
-        width = 16,
-        height = 16,
-        solid = false,
-        defaultState = 'unpressed',
-        states = {
-            ['unpressed'] = {
-                frame = 2
-            },
-            ['pressed'] = {
-                frame = 1
-            }
-        }
+        width = TILE_SIZE/3,
+        height = TILE_SIZE/3,
+        solid = true,
+        pushable = true,
+        color = {196,64,196},
     }
 }

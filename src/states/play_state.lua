@@ -4,9 +4,18 @@ function PlayState:init()
 	board = Board()
     player = Entity(board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {128, 96, 255})
     enemy = Entity(board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {255, 96, 128})
-    
+    box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
+
+    box.onCollide = function(actor, dir)
+    	if board:isEmpty(board.getTile(box.tilePos + dir)) then
+        	box.moveSpeed = actor.moveSpeed
+        	MoveCommand(box, dir)
+    	end
+	end
+
     commands = {}
     actionbar = ActionBar(player)
+    entities = {}
 end
 
 function PlayState:enter()
@@ -20,6 +29,7 @@ function PlayState:draw()
 	board:draw()
 	player:draw()
 	enemy:draw()
+	box:draw()
 	actionbar:draw()
 	push:finish()
 end
@@ -46,7 +56,6 @@ function PlayState:update(dt)
     end
 end
 
---only push successful movement to commandlist
 function PlayState:keypressed(key)
 	if key == "w" then
 		MoveCommand(player, VEC_UP):execute()
@@ -88,10 +97,17 @@ function PlayState:keypressed(key)
 end
 
 function PlayState:mousepressed(x, y, button, istouch)
-	if button == 2 then
-		local nx, ny = push:toGame(x,y)
-		local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
-		if tile ~= nil then
+	local nx, ny = push:toGame(x,y)
+	local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
+	if tile ~= nil then
+		if button == 1 then		
+			local path = board:getSimplePath(player, tile)
+			if #path > 0 then
+	    		local moveDir = table.remove(path).tilePos - player.tilePos
+	    		MoveCommand(player, moveDir):execute()
+	    	end
+		end
+		if button == 2 then
 			tile:toggleSolid()
 		end
 	end
