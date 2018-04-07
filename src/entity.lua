@@ -1,11 +1,14 @@
 Entity = class{
 	init = function(self, def, position)
-		self.position = position
-		self.tilePos = board:toTilePos(self.position)
+		self.tilePos = position
+		self.position = board:toWorldPos(self.tilePos)
+		self.width = TILE_SIZE * 0.6
+		self.height = TILE_SIZE * 0.6
+		self.offset = Vector((TILE_SIZE - self.width)/2, (TILE_SIZE - self.height)/2)
+
 		self.moving = false
-		self.width = TILE_SIZE * 0.5
-		self.height = TILE_SIZE * 0.5
 		self.color = def.color
+
 		-- self.state = stateMachine {
 	 --        ['start'] = function() end,
 	 --        ['play'] = function() end,
@@ -13,6 +16,7 @@ Entity = class{
 	 --    }
 
 	    -- self.state:change('start')
+
 		self.moveSpeed = 0.25
 		self.moveRange = 4
 		self.abilities = {}
@@ -71,10 +75,10 @@ end
 
 function Entity:draw()
 	love.graphics.setColor(self.color)
-	love.graphics.rectangle("fill", self.position.x, self.position.y, self.width, self.height)
+	love.graphics.rectangle("fill", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
 	love.graphics.setColor(0,0,0)
 	love.graphics.setLineWidth(self.width * 0.1)
-	love.graphics.rectangle("line", self.position.x, self.position.y, self.width, self.height)
+	love.graphics.rectangle("line", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
 end
 
 function Entity:render()
@@ -83,8 +87,8 @@ function Entity:render()
 	scaledW = self.width/scaledW
 	scaledH = self.height/scaledH
 	
-	love.graphics.setColor({255,255,255})
-    love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x, self.position.y, 0, scaledW, scaledH)
+	love.graphics.setColor(self.color) --or white
+    love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x + self.offset.x, self.position.y + self.offset.y, 0, scaledW, scaledH)
         --math.floor(self.position.x - self.position.offsetX), math.floor(self.position.y - self.position.offsetY))
 end
 

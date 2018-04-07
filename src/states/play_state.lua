@@ -2,9 +2,9 @@ PlayState = {}
 
 function PlayState:init()
 	board = Board()
-    player = Entity(ENTITY_DEFS['player'], board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)))
+    player = Entity(ENTITY_DEFS['player'], Vector(2,2))
   	player:changeAnimation("walk")
-    enemy = Entity(ENTITY_DEFS['enemy'], board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)))
+    enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
     --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
 
  --    box.onCollide = function(actor, dir)

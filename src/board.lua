@@ -45,7 +45,7 @@ function Board:reset()
 end
 
 function Board:toWorldPos(tile)
-	return Vector(tile.x * TILE_SIZE + self.position.x, tile.y * TILE_SIZE + self.position.y)
+	return Vector((tile.x-1) * TILE_SIZE + self.position.x, (tile.y-1) * TILE_SIZE + self.position.y)
 end
 
 function Board:toTilePos(tile)
