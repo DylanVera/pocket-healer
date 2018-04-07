@@ -3,7 +3,7 @@ PlayState = {}
 function PlayState:init()
 	board = Board()
     player = Entity(ENTITY_DEFS['player'], Vector(2,2))
-  	player:changeAnimation("walk")
+  	player:changeAnimation("idle")
     enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
     --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
 

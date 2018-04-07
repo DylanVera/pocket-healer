@@ -16,6 +16,7 @@ function MoveCommand:execute()
 		self.actor.moving = true
 		self.actor.tilePos = self.actor.tilePos + self.dir
 		board.tiles[tilePos.y][tilePos.x].entity = self.actor
+		self.actor:changeAnimation("walk")
 		flux.to(
 			self.actor.position, 
 			self.actor.moveSpeed, 
@@ -25,6 +26,7 @@ function MoveCommand:execute()
 			})
 		:oncomplete(function() 
 			self.actor.moving = false 
+			self.actor:changeAnimation("idle")
 		end)
 	end
 end

@@ -13,25 +13,34 @@ ENTITY_IDS = {
 ENTITY_DEFS = {
     ['player'] = {
         name = 'player',
+        size = {
+            x = TILE_SIZE * 0.6,
+            y = TILE_SIZE * 0.6
+        },
         animations = {
-            ['walk'] = {
-                frames = {5, 6, 7, 8},
-                interval = 0.155,
+            ['idle'] = {
+                frames = {1, 2, 3, 4},
+                interval = 0.1,
                 texture = 'tiles'
             },
-            ['idle'] = {
-                frames = {152},
-                interval = 0.15,
-                texture = 'gbTiles'
-            }
+            ['walk'] = {
+                frames = {5, 6, 7, 8},
+                interval = 0.1,
+                texture = 'tiles'
+            },
+            
         },
         color = {64, 48, 128}
     },
     ['enemy'] = {
         name = 'enemy',
+        size = {
+            x = TILE_SIZE * 0.6,
+            y = TILE_SIZE * 0.6
+        },
         color = {128, 48, 64},
         animations = {
-
+            
         }
     }
 }

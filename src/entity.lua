@@ -2,8 +2,8 @@ Entity = class{
 	init = function(self, def, position)
 		self.tilePos = position
 		self.position = board:toWorldPos(self.tilePos)
-		self.width = TILE_SIZE * 0.6
-		self.height = TILE_SIZE * 0.6
+		self.width = def.size.x
+		self.height = def.size.y
 		self.offset = Vector((TILE_SIZE - self.width)/2, (TILE_SIZE - self.height)/2)
 
 		self.moving = false

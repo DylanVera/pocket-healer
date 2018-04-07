@@ -26,7 +26,6 @@ function GameObject:init(def, pos)
 end
 
 function GameObject:update(dt)
-
 end
 
 function GameObject:render(adjacentOffsetX, adjacentOffsetY)
