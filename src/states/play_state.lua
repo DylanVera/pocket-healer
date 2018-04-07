@@ -2,16 +2,23 @@ PlayState = {}
 
 function PlayState:init()
 	board = Board()
-    player = Entity(board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {128, 96, 255})
-    enemy = Entity(board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {255, 96, 128})
-    box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
+    player = Entity(ENTITY_DEFS['player'], board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {64, 48, 128})
+    player:changeAnimation("walk")
+    enemy = Entity(ENTITY_DEFS['enemy'], board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {128, 48, 64})
+    --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
 
-    box.onCollide = function(actor, dir)
-    	if board:isEmpty(board.getTile(box.tilePos + dir)) then
-        	box.moveSpeed = actor.moveSpeed
-        	MoveCommand(box, dir)
-    	end
-	end
+ --    box.onCollide = function(actor, dir)
+ --    	if board:isEmpty(board.getTile(box.tilePos + dir)) then
+ --        	box.moveSpeed = actor.moveSpeed
+ --        	MoveCommand(box, dir)
+ --    	end
+	-- end
+
+	timer.every(enemy.moveSpeed * 2, function()
+		local path = board:getSimplePath(enemy, player)
+    	local moveDir = table.remove(path).tilePos - enemy.tilePos
+    	enemy:move(moveDir)
+	end)
 
     commands = {}
     actionbar = ActionBar(player)
@@ -27,9 +34,9 @@ end
 function PlayState:draw()
 	push:start()
 	board:draw()
-	player:draw()
+	player:render()
 	enemy:draw()
-	box:draw()
+	--box:draw()
 	actionbar:draw()
 	push:finish()
 end
@@ -58,16 +65,16 @@ end
 
 function PlayState:keypressed(key)
 	if key == "w" then
-		MoveCommand(player, VEC_UP):execute()
+		player:move(VEC_UP)
 	end
 	if key == "a" then
-		MoveCommand(player, VEC_LEFT):execute()
+		player:move(VEC_LEFT)
 	end
 	if key == "s" then
-		MoveCommand(player, VEC_DOWN):execute()
+		player:move(VEC_DOWN)
 	end
 	if key == "d" then
-		MoveCommand(player, VEC_RIGHT):execute()
+		player:move(VEC_RIGHT)
 	end
 
 	if key == "z" then

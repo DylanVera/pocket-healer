@@ -74,7 +74,6 @@ function Board:getSimplePath(p1, p2)
 		current = table.remove(frontier, 1)
 
 		if current == goal then
-			print("goal reached")	
 			--build the path
 			current = goal 
 			path = {}
@@ -82,8 +81,6 @@ function Board:getSimplePath(p1, p2)
 			   table.insert(path, current)
 			   current = cameFrom[current]
 			end
-			--goal.color = {98, 255, 128}
-			print("Path found: "..#path.." moves")
 			return path
 		end
 
@@ -123,8 +120,6 @@ end
 function Board:getPawn(tile)
 	local entity = self.tiles[tile.y][tile.x]:getEntity()
 	if entity ~= nil then
-		print("Entity at ("..tile.x..","..tile.y.."):")
-		print(entity)
 		return entity
 	end
 end

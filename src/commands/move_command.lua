@@ -12,11 +12,10 @@ function MoveCommand:execute()
 	if not self.actor.moving and board:isEmpty(self.actor.tilePos + self.dir) then
 		board.tiles[self.oldPos.y][self.oldPos.x].entity = nil	
 		board.tiles[tilePos.y][tilePos.x].color = self.actor.color
-		print("#commands before: "..#commands)
-		print("moving to "..tilePos.x..","..tilePos.y)
 		table.insert(commands, self)
-		print("#commands after: "..#commands.."\n")
 		self.actor.moving = true
+		self.actor.tilePos = self.actor.tilePos + self.dir
+		board.tiles[tilePos.y][tilePos.x].entity = self.actor
 		flux.to(
 			self.actor.position, 
 			self.actor.moveSpeed, 
@@ -26,8 +25,6 @@ function MoveCommand:execute()
 			})
 		:oncomplete(function() 
 			self.actor.moving = false 
-			self.actor.tilePos = self.actor.tilePos + self.dir
-			board.tiles[tilePos.y][tilePos.x].entity = self.actor
 		end)
 	end
 end
@@ -37,11 +34,11 @@ function MoveCommand:undo()
 	if not self.actor.moving and board:isEmpty(self.actor.tilePos - self.dir) then
 		board.tiles[self.actor.tilePos.y][self.actor.tilePos.x].entity = nil	
 		board.tiles[self.actor.tilePos.y][self.actor.tilePos.x].color = {128,128,128}
-		print("#commands before: "..#commands)
-		print("undoing move from "..tilePos.x..","..tilePos.y)
 		table.remove(commands, #commands)
-		print("#commands after: "..#commands.."\n")
 		self.actor.moving = true
+		self.actor.tilePos = self.actor.tilePos - self.dir
+		board.tiles[tilePos.y][tilePos.x].entity = self.actor
+
 		flux.to(
 			self.actor.position, 
 			self.actor.moveSpeed, 
@@ -50,9 +47,7 @@ function MoveCommand:undo()
 				y = self.actor.position.y - self.dir.y * TILE_SIZE
 			})
 		:oncomplete(function() 
-			self.actor.moving = false 
-			self.actor.tilePos = self.actor.tilePos - self.dir
-			board.tiles[tilePos.y][tilePos.x].entity = self.actor
+			self.actor.moving = false 	
 		end)
 	end
 end

@@ -14,11 +14,20 @@ ENTITY_DEFS = {
     ['player'] = {
         name = 'player',
         sprite = '',
-        animations = {},
-        color = {128, 96, 255}
+        animations = {
+            ['walk'] = {
+                frames = {1,2,3,4},
+                interval = 0.155,
+                texture = 'tiles'
+            }
+        },
+        color = {64, 48, 128}
     },
-    ['testEnemy'] = {
+    ['enemy'] = {
         name = 'enemy',
-        color = {255, 96, 128}
+        color = {128, 48, 64},
+        animations = {
+
+        }
     }
 }

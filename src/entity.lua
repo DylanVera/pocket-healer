@@ -1,5 +1,5 @@
 Entity = class{
-	init = function(self, position, color)
+	init = function(self, def, position, color)
 		self.position = position
 		self.tilePos = board:toTilePos(self.position)
 		self.moving = false
@@ -16,12 +16,13 @@ Entity = class{
 		self.moveSpeed = 0.25
 		self.moveRange = 4
 		self.abilities = {}
-		self.animations = {}--self:createAnimations()
+		self.animations = self:createAnimations(def.animations)
 		self.maxAp = 5
 		self.ap = self.maxAp
 		self.maxHealth = 3
 		self.health = self.maxHealth
 		self.onCollide = function() end
+
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 		board.tiles[self.tilePos.y][self.tilePos.x].color = self.color
 	end
@@ -61,6 +62,10 @@ function Entity:processAI(params, dt)
 	
 end
 
+function Entity:changeAnimation(name)
+    self.currentAnimation = self.animations[name]
+end
+
 function Entity:draw()
 	love.graphics.setColor(self.color)
 	love.graphics.rectangle("fill", self.position.x, self.position.y, self.width, self.height)
@@ -69,7 +74,14 @@ function Entity:draw()
 	love.graphics.rectangle("line", self.position.x, self.position.y, self.width, self.height)
 end
 
+function Entity:render()
+	local anim = self.currentAnimation
+    love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x, self.position.y)
+        --math.floor(self.position.x - self.position.offsetX), math.floor(self.position.y - self.position.offsetY))
+end
+
 --chceck move is valid
 function Entity:move(dir)
 	MoveCommand(self, dir):execute()
 end
+
