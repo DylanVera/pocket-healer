@@ -2,9 +2,9 @@ PlayState = {}
 
 function PlayState:init()
 	board = Board()
-    player = Entity(ENTITY_DEFS['player'], board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)), {64, 48, 128})
-    player:changeAnimation("walk")
-    enemy = Entity(ENTITY_DEFS['enemy'], board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)), {128, 48, 64})
+    player = Entity(ENTITY_DEFS['player'], board.position + Vector((TILE_SIZE * 1.25), (TILE_SIZE * 1.25)))
+  	player:changeAnimation("walk")
+    enemy = Entity(ENTITY_DEFS['enemy'], board.position + Vector((TILE_SIZE * 7) + (TILE_SIZE * 0.25), (TILE_SIZE * 7) + (TILE_SIZE * 0.25)))
     --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
 
  --    box.onCollide = function(actor, dir)
@@ -14,11 +14,11 @@ function PlayState:init()
  --    	end
 	-- end
 
-	timer.every(enemy.moveSpeed * 2, function()
-		local path = board:getSimplePath(enemy, player)
-    	local moveDir = table.remove(path).tilePos - enemy.tilePos
-    	enemy:move(moveDir)
-	end)
+	-- timer.every(enemy.moveSpeed * 2, function()
+	-- 	local path = board:getSimplePath(enemy, player)
+ --    	local moveDir = table.remove(path).tilePos - enemy.tilePos
+ --    	enemy:move(moveDir)
+	-- end)
 
     commands = {}
     actionbar = ActionBar(player)
@@ -42,6 +42,7 @@ function PlayState:draw()
 end
 
 function PlayState:update(dt)
+	player:update(dt)
 	if suit.Button("neighbors", TILE_SIZE, TILE_SIZE, TILE_SIZE * 2.5, TILE_SIZE).hit then
     	local neighbors = board:getNeighbors(player.tilePos)
     	for i,n in ipairs(neighbors) do

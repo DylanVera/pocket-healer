@@ -38,7 +38,7 @@ require("src/game_object")
 require("src/actionbar")
 
 gTextures = {
-    ['tiles'] = love.graphics.newImage('/graphics/testSprites.png')
+    ['tiles'] = love.graphics.newImage('graphics/testSprites.png')
 }
 
 gFrames = {

@@ -1,11 +1,11 @@
 Entity = class{
-	init = function(self, def, position, color)
+	init = function(self, def, position)
 		self.position = position
 		self.tilePos = board:toTilePos(self.position)
 		self.moving = false
 		self.width = TILE_SIZE * 0.5
 		self.height = TILE_SIZE * 0.5
-		self.color = color
+		self.color = def.color
 		-- self.state = stateMachine {
 	 --        ['start'] = function() end,
 	 --        ['play'] = function() end,
@@ -33,7 +33,7 @@ function Entity:createAnimations(animations)
 
     for k, animationDef in pairs(animations) do
         animationsReturned[k] = Animation {
-            texture = animationDef.texture or 'entities',
+            texture = animationDef.texture or 'tiles',
             frames = animationDef.frames,
             interval = animationDef.interval
         }
@@ -48,6 +48,9 @@ end
 
 function Entity:update(dt)
 	--self.state:update(dt)
+	if self.currentAnimation then
+        self.currentAnimation:update(dt)
+    end
 end
 
 function Entity:damage(dmg)
@@ -55,11 +58,11 @@ function Entity:damage(dmg)
     if self.health <= 0 then
     	print("you got dead")
     	--gameover state
+    	--gameState.switch(MenuState)
     end
 end
 
 function Entity:processAI(params, dt)
-	
 end
 
 function Entity:changeAnimation(name)
@@ -76,7 +79,12 @@ end
 
 function Entity:render()
 	local anim = self.currentAnimation
-    love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x, self.position.y)
+	local scaledX, scaledY, scaledW, scaledH = gFrames[anim.texture][anim:getCurrentFrame()]:getViewport()
+	scaledW = self.width/scaledW
+	scaledH = self.height/scaledH
+	
+	love.graphics.setColor({255,255,255})
+    love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x, self.position.y, 0, scaledW, scaledH)
         --math.floor(self.position.x - self.position.offsetX), math.floor(self.position.y - self.position.offsetY))
 end
 
@@ -84,4 +92,3 @@ end
 function Entity:move(dir)
 	MoveCommand(self, dir):execute()
 end
-

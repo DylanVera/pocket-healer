@@ -13,12 +13,16 @@ ENTITY_IDS = {
 ENTITY_DEFS = {
     ['player'] = {
         name = 'player',
-        sprite = '',
         animations = {
             ['walk'] = {
-                frames = {1,2,3,4},
+                frames = {5, 6, 7, 8},
                 interval = 0.155,
                 texture = 'tiles'
+            },
+            ['idle'] = {
+                frames = {152},
+                interval = 0.15,
+                texture = 'gbTiles'
             }
         },
         color = {64, 48, 128}
