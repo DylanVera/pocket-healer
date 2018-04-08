@@ -21,6 +21,7 @@ require("src/utils.state_stack")
 require("src/constants")
 require("src/entity_defs")
 require("src/object_defs")
+require("src/tile_defs")
 
 require("src/animation")
 

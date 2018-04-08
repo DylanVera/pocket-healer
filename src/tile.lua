@@ -1,11 +1,11 @@
 Tile = class{
-	init = function(self, position, solid, color)
+	init = function(self, type, position)
 		self.tilePos = position
 		self.center = (self.tilePos * TILE_SIZE) + Vector(TILE_SIZE/2, TILE_SIZE/2)
-		self.isSolid = solid or false
+		self.isSolid = type.solid or false
 		self.effects = {}
 		self.entity = nil	--queue/stack?
-		self.color = color or {0,0,0}
+		self.color = type.color or {0,0,0}
 		self.onEnter = function() end
 		self.prop = nil
 	end
@@ -26,8 +26,8 @@ end
 function Tile:toggleSolid()
 	self.isSolid = not self.isSolid
 	if self.isSolid then
-		self.color = {64,64,64}
+		self.color = TILE_TYPES["wall"].color
 	else
-		self.color = {0,0,0}
+		self.color = TILE_TYPES["blank"].color
 	end
 end

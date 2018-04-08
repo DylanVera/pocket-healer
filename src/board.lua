@@ -29,9 +29,9 @@ function Board:loadTestMap()
 		table.insert(self.tiles, {})
 		for x=1, self.boardSize.x do
 			if x == 1 or y == 1 or y == self.boardSize.y or x == self.boardSize.x then
-				self.tiles[y][x] = Tile(Vector(x,y), true, {64,64,64})
+				self.tiles[y][x] = Tile(TILE_TYPES["wall"], Vector(x,y))
 			else
-				self.tiles[y][x] = Tile(Vector(x,y), false)
+				self.tiles[y][x] = Tile(TILE_TYPES["blank"], Vector(x,y))
 			end
 		end
 	end

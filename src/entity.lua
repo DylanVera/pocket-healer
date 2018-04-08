@@ -79,13 +79,13 @@ function Entity:draw()
 	love.graphics.setColor(self.color)
 	love.graphics.rectangle("fill", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
 	love.graphics.setColor(0,0,0)
-	love.graphics.setLineWidth(self.width * 0.1)
-	love.graphics.rectangle("line", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
+	-- love.graphics.setLineWidth(self.width * 0.1)
+	-- love.graphics.rectangle("line", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
 end
 
 function Entity:render()
 	local anim = self.currentAnimation
-	local scaledX, scaledY, scaledW, scaledH = gFrames[anim.texture][anim:getCurrentFrame()]:getViewport()
+	local scaledX, scaledY, scaledW, scaledH = gFrames[anim.texture][anim:getCurrentFrame()]:getViewport() --why am i doing this every frame...
 	scaledW = self.width/scaledW
 	scaledH = self.height/scaledH
 	

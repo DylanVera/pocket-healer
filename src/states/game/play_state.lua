@@ -82,21 +82,17 @@ function PlayState:keypressed(key)
 		player:move(VEC_RIGHT)
 	end
 
-	if key == "z" then
-		if #commands > 0 then
-			commands[#commands]:undo()
-		else
-			print("no commands to undo")
-		end
+	if key  == "escape" then
+		love.event.quit()
 	end
 
-	-- if key == "space" then
- --    	local neighbors = board:getNeighbors(player.tilePos)
- --    	for i,n in ipairs(neighbors) do
- --    		n.color = {255,64,96}
- --    	end	
- --    end
-
+ 	-- 	if key == "z" then
+	-- 	if #commands > 0 then
+	-- 		commands[#commands]:undo()
+	-- 	else
+	-- 		print("no commands to undo")
+	-- 	end
+	-- end
 	-- --be able to undo a redo
 	-- if key == "r" then
 	-- 	if commands.last >= commands.first then
