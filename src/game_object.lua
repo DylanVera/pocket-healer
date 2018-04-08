@@ -10,7 +10,7 @@ function GameObject:init(def, pos)
     -- whether it acts as an obstacle or not
     self.solid = def.solid
     self.color = def.color
-
+    
     -- dimensions
     self.width = def.width
     self.height = def.height

@@ -27,8 +27,8 @@ require("src/animation")
 require("src/commands.move_command")
 
 --game states
-require("src/states.play_state")
-require("src/states.menu_state")
+require("src/states.game.play_state")
+require("src/states.game.menu_state")
 
 --entities/game objects
 require("src/board")
@@ -37,8 +37,10 @@ require("src/entity")
 require("src/game_object")
 require("src/actionbar")
 
+--entity states (objects too?)
+
 gTextures = {
-    ['tiles'] = love.graphics.newImage('graphics/testSprites.png')
+    ['tiles'] = love.graphics.newImage('graphics/transparentBoy.png')
 }
 
 gFrames = {

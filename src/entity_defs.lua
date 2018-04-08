@@ -1,10 +1,3 @@
---[[
-    GD50
-    Pokemon
-    Author: Colton Ogden
-    cogden@cs50.harvard.edu
-]]
-
 ENTITY_IDS = {
     'player',
     'testEnemy'
@@ -30,6 +23,7 @@ ENTITY_DEFS = {
             },
             
         },
+        flipOffset = TILE_SIZE * 0.6,
         color = {64, 48, 128}
     },
     ['enemy'] = {
@@ -40,7 +34,7 @@ ENTITY_DEFS = {
         },
         color = {128, 48, 64},
         animations = {
-            
+
         }
     }
 }

@@ -8,6 +8,7 @@ Entity = class{
 
 		self.moving = false
 		self.color = def.color
+		self.facingRight = false
 
 		-- self.state = stateMachine {
 	 --        ['start'] = function() end,
@@ -26,6 +27,7 @@ Entity = class{
 		self.maxHealth = 3
 		self.health = self.maxHealth
 		self.onCollide = function() end
+		self.flipOffset = def.flipOffset or 0
 
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 		board.tiles[self.tilePos.y][self.tilePos.x].color = self.color
@@ -87,12 +89,32 @@ function Entity:render()
 	scaledW = self.width/scaledW
 	scaledH = self.height/scaledH
 	
-	love.graphics.setColor(self.color) --or white
-    love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x + self.offset.x, self.position.y + self.offset.y, 0, scaledW, scaledH)
+	if self.facingRight then
+		scaledW = -scaledW
+	end
+
+	love.graphics.setColor({255, 255, 255}) --or white
+    love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x + self.offset.x , self.position.y + self.offset.y, 0, scaledW, scaledH)
         --math.floor(self.position.x - self.position.offsetX), math.floor(self.position.y - self.position.offsetY))
 end
 
 --chceck move is valid
 function Entity:move(dir)
-	MoveCommand(self, dir):execute()
+	local tilePos = board:toTilePos(self.position + (dir * TILE_SIZE))
+	if board:isEmpty(tilePos) then
+		if (self.facingRight and dir == VEC_LEFT) or (not self.facingRight and dir == VEC_RIGHT) then
+			self:flip(self.flipOffset)
+		end
+		MoveCommand(self, dir):execute()
+	end
+end
+
+--this is definitely gonna become a problem some day...
+function Entity:flip()
+	self.facingRight = not self.facingRight
+	if self.facingRight then
+		self.offset.x = self.offset.x + self.flipOffset
+	else
+		self.offset.x = self.offset.x - self.flipOffset
+	end
 end

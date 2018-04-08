@@ -5,7 +5,7 @@ Tile = class{
 		self.isSolid = solid or false
 		self.effects = {}
 		self.entity = nil	--queue/stack?
-		self.color = color or {128,128,128}
+		self.color = color or {0,0,0}
 		self.onEnter = function() end
 		self.prop = nil
 	end
@@ -28,6 +28,6 @@ function Tile:toggleSolid()
 	if self.isSolid then
 		self.color = {64,64,64}
 	else
-		self.color = {128,128,128}
+		self.color = {0,0,0}
 	end
 end

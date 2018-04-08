@@ -90,12 +90,12 @@ function PlayState:keypressed(key)
 		end
 	end
 
-	-- if key == "space" then
- --    	local neighbors = board:getNeighbors(player.tilePos)
- --    	for i,n in ipairs(neighbors) do
- --    		n.color = {255,64,96}
- --    	end	
- --    end
+	if key == "space" then
+    	local neighbors = board:getNeighbors(player.tilePos)
+    	for i,n in ipairs(neighbors) do
+    		n.color = {255,64,96}
+    	end	
+    end
 
 	-- --be able to undo a redo
 	-- if key == "r" then
