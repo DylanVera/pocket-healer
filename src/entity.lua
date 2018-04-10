@@ -20,7 +20,7 @@ Entity = class{
 
 		self.moveSpeed = 0.25
 		self.moveRange = 4
-		self.abilities = {}
+		self.abilities = def.abilities or {}
 		self.animations = self:createAnimations(def.animations)
 		self.maxAp = 7
 		self.ap = self.maxAp
@@ -117,6 +117,13 @@ function Entity:flip()
 		self.offset.x = self.offset.x + self.flipOffset
 	else
 		self.offset.x = self.offset.x - self.flipOffset
+	end
+end
+
+function Entity:cast(i)
+	if self.ap >= self.abilities[i].cost then
+		self.ap = self.ap - self.abilities[i].cost
+		self.abilities[i]:execute()
 	end
 end
 

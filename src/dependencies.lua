@@ -19,11 +19,19 @@ require("src/utils.state_machine")
 require("src/utils.state_stack")
 
 require("src/constants")
-require("src/entity_defs")
-require("src/object_defs")
-require("src/tile_defs")
-require("src/ability_defs")
 
+--entities/game objects
+require("src/board")
+require("src/ability_defs")
+require("src/ability")
+require("src/entity_defs")
+require("src/entity")
+require("src/object_defs")
+require("src/game_object")
+require("src/tile_defs")
+require("src/tile")
+
+require("src/actionbar")
 require("src/animation")
 
 require("src/commands.move_command")
@@ -31,16 +39,6 @@ require("src/commands.move_command")
 --game states
 require("src/states.game.play_state")
 require("src/states.game.menu_state")
-
---entities/game objects
-require("src/board")
-require("src/tile")
-require("src/entity")
-require("src/game_object")
-require("src/actionbar")
-require("src/ability")
-
---entity states (objects too?)
 
 
 --Load assets

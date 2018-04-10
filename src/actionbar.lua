@@ -1,15 +1,21 @@
 ActionBar = class{
 	init = function(self, actor)
-		self.abilities = {0,0,0,0,0,0}
+		self.actor = actor
+		self.abilities = actor.abilities
 		self.position = Vector(ACTIONBAR_RENDER_OFFSET_X, ACTIONBAR_RENDER_OFFSET_Y)
 	end
 }
 
-function ActionBar:cast(id)
-
+function ActionBar:cast(i)
+	self.actor:cast(i)
 end
 
 function ActionBar:render()
+end
+
+function ActionBar:changeActor(actor)
+	self.actor = actor
+	self.abilities = actor.abilities
 end
 
 function ActionBar:draw()

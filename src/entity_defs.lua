@@ -23,6 +23,12 @@ ENTITY_DEFS = {
             },
             
         },
+        abilities = {
+            Ability(ABILITY_DEFS["heal"]),
+            Ability(ABILITY_DEFS["smite"]),
+            Ability(ABILITY_DEFS["strike"]),
+            Ability(ABILITY_DEFS["block"])
+        },
         flipOffset = TILE_SIZE * 0.6,
         color = {64, 48, 128}
     },
@@ -35,6 +41,10 @@ ENTITY_DEFS = {
         color = {128, 48, 64},
         animations = {
 
+        },
+        abilities = {
+            Ability(ABILITY_DEFS["strike"]),
+            Ability(ABILITY_DEFS["block"])
         }
     }
 }

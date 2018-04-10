@@ -87,6 +87,21 @@ function PlayState:keypressed(key)
 		entities[currentUnit]:move(VEC_RIGHT)
 	end
 
+	if key == "1" then
+		actionbar:cast(1)
+	elseif key == "2" then
+		actionbar:cast(2)
+	elseif key == "3" then
+		actionbar:cast(3)
+	elseif key == "4" then
+		actionbar:cast(4)
+	end
+	-- elseif key == "5" then
+	-- 	actionbar.abilities[5]:execute()
+	-- elseif key == "6" then
+	-- 	actionbar.abilities[6]:execute()
+	-- end
+	
 	if key == "space" then
 		self:endTurn()
 	end
@@ -144,4 +159,5 @@ function PlayState:endTurn()
 	--move all this garbage to an entity end turn function
 	entities[currentUnit]:endTurn()
 	currentUnit = currentUnit % #entities + 1
+	actionbar:changeActor(entities[currentUnit])
 end
