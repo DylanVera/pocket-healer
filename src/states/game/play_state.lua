@@ -19,10 +19,10 @@ function PlayState:init()
  --    	local moveDir = table.remove(path).tilePos - enemy.tilePos
  --    	enemy:move(moveDir)
 	-- end)
-
+	currentUnit = 1
     commands = {}
-    --actionbar = ActionBar(player)
-    entities = {}
+    actionbar = ActionBar(player)
+    entities = {player, enemy}
 end
 
 function PlayState:enter()
@@ -37,12 +37,17 @@ function PlayState:draw()
 	player:render()
 	enemy:draw()
 	--box:draw()
-	--actionbar:draw()
+	actionbar:draw()
+	
+	love.graphics.setNewFont(TILE_SIZE/2)
+	love.graphics.setColor(entities[currentUnit].color)
+	love.graphics.print("AP: "..entities[currentUnit].ap, ACTIONBAR_RENDER_OFFSET_X - (TILE_SIZE*2), ACTIONBAR_RENDER_OFFSET_Y + (TILE_SIZE/4))
 	push:finish()
 end
 
 function PlayState:update(dt)
 	player:update(dt)
+
 	if suit.Button("neighbors", TILE_SIZE, TILE_SIZE, TILE_SIZE * 2.5, TILE_SIZE).hit then
     	local neighbors = board:getNeighbors(player.tilePos)
     	for i,n in ipairs(neighbors) do
@@ -70,16 +75,20 @@ end
 
 function PlayState:keypressed(key)
 	if key == "w" then
-		player:move(VEC_UP)
+		entities[currentUnit]:move(VEC_UP)
 	end
 	if key == "a" then
-		player:move(VEC_LEFT)
+		entities[currentUnit]:move(VEC_LEFT)
 	end
 	if key == "s" then
-		player:move(VEC_DOWN)
+		entities[currentUnit]:move(VEC_DOWN)
 	end
 	if key == "d" then
-		player:move(VEC_RIGHT)
+		entities[currentUnit]:move(VEC_RIGHT)
+	end
+
+	if key == "space" then
+		self:endTurn()
 	end
 
 	if key  == "escape" then
@@ -109,10 +118,10 @@ function PlayState:mousepressed(x, y, button, istouch)
 	local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
 	if tile ~= nil then
 		if button == 1 then		
-			local path = board:getSimplePath(player, tile)
+			local path = board:getSimplePath(entities[currentUnit], tile)
 			if #path > 0 then
-	    		local moveDir = table.remove(path).tilePos - player.tilePos
-	    		MoveCommand(player, moveDir):execute()
+	    		local moveDir = table.remove(path).tilePos - entities[currentUnit].tilePos
+	    		entities[currentUnit]:move(moveDir)
 	    	end
 		end
 		if button == 2 then
@@ -121,6 +130,18 @@ function PlayState:mousepressed(x, y, button, istouch)
 	end
 end
 
-function PlayState:processTurn()
-	currentUnit = 0;
+function PlayState:process() 
+  --local command = actors[_currentActor].getAction();
+
+  --// Don't advance past the actor if it didn't take a turn.
+  --if action == nil then return nil end
+
+  --action.perform();
+  --_currentActor = (_currentActor + 1) % actors.length;
+end
+
+function PlayState:endTurn()
+	--move all this garbage to an entity end turn function
+	entities[currentUnit]:endTurn()
+	currentUnit = currentUnit % #entities + 1
 end

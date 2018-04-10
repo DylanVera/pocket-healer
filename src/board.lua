@@ -11,7 +11,6 @@ Board = class{
 	end
 }
 
-
 function Board:draw()
 	for y, row in ipairs(self.tiles) do
 		for x, cell in ipairs(row) do
@@ -114,10 +113,10 @@ function Board:getTile(tile)
 end
 
 function Board:isEmpty(tile)
-	return self:isInBounds(tile) and self:getPawn(tile) == nil and not self.tiles[tile.y][tile.x].isSolid
+	return self:isInBounds(tile) and self:entityAt(tile) == nil and not self.tiles[tile.y][tile.x].isSolid
 end
 
-function Board:getPawn(tile)
+function Board:entityAt(tile)
 	local entity = self.tiles[tile.y][tile.x]:getEntity()
 	if entity ~= nil then
 		return entity
@@ -129,17 +128,14 @@ function Board:isInBounds(tile)
 end
 
 function Board:getNeighbors(tile)
-	local neighbors = {
-						self.tiles[tile.y+1][tile.x],
-						self.tiles[tile.y-1][tile.x],
-						self.tiles[tile.y][tile.x+1],
-						self.tiles[tile.y][tile.x-1]
-					}
+	local neighbors = {}
 
 	--filter out walls and invalid stuff
-	for n=#neighbors, 1, -1 do
-		if not self:isInBounds(neighbors[n].tilePos) or neighbors[n].isSolid then
-			table.remove(neighbors, n)
+	for i, dir in ipairs(DIR_VECTORS) do
+		local tile = board:getTile(tile + dir)
+		print(tile)
+		if tile ~= nil and not tile.isSolid then
+			table.insert(neighbors, tile)
 		end
 	end
 

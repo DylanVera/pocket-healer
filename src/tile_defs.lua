@@ -1,5 +1,6 @@
 TILE_IDS = {
-	"blank"
+	"blank",
+	"wall"
 }
 
 TILE_TYPES = {

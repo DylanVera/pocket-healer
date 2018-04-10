@@ -2,11 +2,11 @@ Tile = class{
 	init = function(self, type, position)
 		self.tilePos = position
 		self.center = (self.tilePos * TILE_SIZE) + Vector(TILE_SIZE/2, TILE_SIZE/2)
-		self.isSolid = type.solid or false
+		self.isSolid = type.isSolid or false
 		self.effects = {}
 		self.entity = nil	--queue/stack?
 		self.color = type.color or {0,0,0}
-		self.onEnter = function() end
+		self.onEnter = type.onEnter or function() end
 		self.prop = nil
 	end
 }
@@ -22,7 +22,7 @@ end
 function Tile:getEffect()
 	return self.effects[#self.effects]
 end
-
+ 
 function Tile:toggleSolid()
 	self.isSolid = not self.isSolid
 	if self.isSolid then

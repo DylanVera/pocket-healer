@@ -22,12 +22,14 @@ Entity = class{
 		self.moveRange = 4
 		self.abilities = {}
 		self.animations = self:createAnimations(def.animations)
-		self.maxAp = 5
+		self.maxAp = 7
 		self.ap = self.maxAp
+		self.apRegen = 5
 		self.maxHealth = 3
 		self.health = self.maxHealth
 		self.onCollide = function() end
 		self.flipOffset = def.flipOffset or 0
+		self.effects = {}
 
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 		board.tiles[self.tilePos.y][self.tilePos.x].color = self.color
@@ -63,8 +65,8 @@ function Entity:damage(dmg)
     self.health = self.health - dmg
     if self.health <= 0 then
     	print("you got dead")
-    	--gameover state
-    	--gameState.switch(MenuState)
+    	--gameover state (just go back to menu for now)
+    	gameState.switch(MenuState)
     end
 end
 
@@ -79,15 +81,15 @@ function Entity:draw()
 	love.graphics.setColor(self.color)
 	love.graphics.rectangle("fill", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
 	love.graphics.setColor(0,0,0)
-	-- love.graphics.setLineWidth(self.width * 0.1)
-	-- love.graphics.rectangle("line", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
+	love.graphics.setLineWidth(self.width * 0.1)
+	love.graphics.rectangle("line", self.position.x + self.offset.x, self.position.y + self.offset.y, self.width, self.height)
 end
 
 function Entity:render()
 	local anim = self.currentAnimation
 	local scaledX, scaledY, scaledW, scaledH = gFrames[anim.texture][anim:getCurrentFrame()]:getViewport() --why am i doing this every frame...
 	scaledW = self.width/scaledW
-	scaledH = self.height/scaledH
+	scaledH = self.height/scaledH 	
 	
 	if self.facingRight then
 		scaledW = -scaledW
@@ -95,13 +97,12 @@ function Entity:render()
 
 	love.graphics.setColor({255, 255, 255}) --or white
     love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x + self.offset.x , self.position.y + self.offset.y, 0, scaledW, scaledH)
-        --math.floor(self.position.x - self.position.offsetX), math.floor(self.position.y - self.position.offsetY))
 end
 
---chceck move is valid
 function Entity:move(dir)
 	local tilePos = board:toTilePos(self.position + (dir * TILE_SIZE))
-	if board:isEmpty(tilePos) then
+	if board:isEmpty(tilePos) and self.ap > 0 then
+		self.ap = self.ap - 1
 		if (self.facingRight and dir == VEC_LEFT) or (not self.facingRight and dir == VEC_RIGHT) then
 			self:flip(self.flipOffset)
 		end
@@ -117,4 +118,13 @@ function Entity:flip()
 	else
 		self.offset.x = self.offset.x - self.flipOffset
 	end
+end
+
+function Entity:endTurn()
+	self.ap = math.min(self.ap + self.apRegen, self.maxAp)
+	--end of turn effects and stuff
+end
+
+function Entity:startTurn()
+	--beginning of turn effects and stuff
 end
