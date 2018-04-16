@@ -20,8 +20,9 @@ require("src/utils.state_stack")
 
 require("src/constants")
 
---entities/game objects
+--entities/game objectss
 require("src/board")
+require("src/cursor")
 require("src/ability_defs")
 require("src/ability")
 require("src/entity_defs")
@@ -37,17 +38,20 @@ require("src/animation")
 require("src/commands.move_command")
 
 --game states
-require("src/states.game.play_state")
+require("src/states.base_state")
+require("src/states.unit_state")
 require("src/states.game.menu_state")
-
+require("src/states.game.play_state")
 
 --Load assets
 gTextures = {
-    ['tiles'] = love.graphics.newImage('graphics/transparentBoy.png')
+    ['tiles'] = love.graphics.newImage('graphics/transparentBoy.png'),
+    ['ragebaby'] = love.graphics.newImage('graphics/rageBaby.png')
 }
 
 gFrames = {
-    ['tiles'] = GenerateQuads(gTextures['tiles'], 128, 128)
+    ['tiles'] = GenerateQuads(gTextures['tiles'], 128, 128),
+    ['ragebaby'] = GenerateQuads(gTextures['ragebaby'], 478, 498)
 }
 
 gFonts = {
@@ -59,5 +63,5 @@ gFonts = {
 gSounds = {
     ['music'] = love.audio.newSource('audio/music.mp3'),
     ['hit-enemy'] = love.audio.newSource('audio/hit_enemy.wav'),
-    ['hit-player'] = love.audio.newSource('audio/hit_player.wav')
+    ['hit-healer'] = love.audio.newSource('audio/hit_player.wav')
 }

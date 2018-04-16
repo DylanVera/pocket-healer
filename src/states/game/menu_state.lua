@@ -6,7 +6,7 @@ end
 function MenuState:enter()
 end
 
-function MenuState:leave()
+function MenuState:exit()
 end
 
 function MenuState:draw()
@@ -17,10 +17,13 @@ function MenuState:draw()
 end
 
 function MenuState:update(dt)
+	if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+		gStateStack:push(PlayState());
+	end
 end
 
 function MenuState:keypressed(key)
-	if key == "return" then
-		gameState.switch(PlayState);
+	if key == "enter" or key == "return" then
+		gameState.switch(PlayState)
 	end
 end

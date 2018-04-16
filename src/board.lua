@@ -43,6 +43,23 @@ function Board:reset()
 	self.tiles = {}
 end
 
+--This gets the target for if a shot hits the first object (like the turret)
+function Board:GetProjectileEnd(p1,p2,profile)
+	profile = profile or PATH_PROJECTILE
+	local direction = GetDirection(p2 - p1)
+	local target = p1 + DIR_VECTORS[direction]
+
+	while not Board:IsBlocked(target, profile) do
+		target = target + DIR_VECTORS[direction]
+	end
+
+	if not Board:IsValid(target) then
+		target = target - DIR_VECTORS[direction]
+	end
+	
+	return target
+end
+
 function Board:toWorldPos(tile)
 	return Vector((tile.x-1) * TILE_SIZE + self.position.x, (tile.y-1) * TILE_SIZE + self.position.y)
 end
@@ -100,7 +117,17 @@ function Board:getSimplePath(p1, p2)
 end
 
 --highlight reachable spaces for movement/targeting
-function Board:getSimpleReachable(point, pathSize)
+function Board:getSimpleReachable(point, dist)
+	local tiles = {}
+	for y, row in ipairs(self.tiles) do
+		for x, tile in ipairs(row) do
+			if self:manhattan(point, tile.tilePos) <= dist and self:isEmpty(tile.tilePos) then
+				table.insert(tiles, tile)
+			end
+		end
+	end
+
+	return tiles
 end
 
 function Board:isPawnSpace(tile)

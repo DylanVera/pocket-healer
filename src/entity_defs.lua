@@ -1,11 +1,12 @@
 ENTITY_IDS = {
-    'player',
+    'healer',
+    'tank',
     'testEnemy'
 }
 
 ENTITY_DEFS = {
-    ['player'] = {
-        name = 'player',
+    ['healer'] = {
+        name = 'healer',
         size = {
             x = TILE_SIZE * 0.6,
             y = TILE_SIZE * 0.6
@@ -24,13 +25,41 @@ ENTITY_DEFS = {
             
         },
         abilities = {
-            Ability(ABILITY_DEFS["heal"]),
-            Ability(ABILITY_DEFS["smite"]),
-            Ability(ABILITY_DEFS["strike"]),
-            Ability(ABILITY_DEFS["block"])
+            ABILITY_DEFS["heal"],
+            ABILITY_DEFS["smite"]
+            -- Ability(ABILITY_DEFS["heal"]),
+            -- Ability(ABILITY_DEFS["smite"]),
+            -- Ability(ABILITY_DEFS["strike"]),
+            -- Ability(ABILITY_DEFS["block"])
         },
         flipOffset = TILE_SIZE * 0.6,
         color = {64, 48, 128}
+    },
+    ['tank'] = {
+        name = 'tank',
+        size = {
+            x = TILE_SIZE * 0.6,
+            y = TILE_SIZE * 0.6
+        },
+        animations = {
+            ['idle'] = {
+                frames = {1, 2, 3, 4},
+                interval = 0.1,
+                texture = 'tiles'
+            },
+            ['walk'] = {
+                frames = {5, 6, 7, 8},
+                interval = 0.1,
+                texture = 'tiles'
+            },
+            
+        },
+        abilities = {
+            ABILITY_DEFS["strike"],
+            ABILITY_DEFS["block"]
+        },
+        flipOffset = TILE_SIZE * 0.6,
+        color = {32, 96, 64}
     },
     ['enemy'] = {
         name = 'enemy',
@@ -40,11 +69,15 @@ ENTITY_DEFS = {
         },
         color = {128, 48, 64},
         animations = {
-
+            ['idle'] = {
+                frames = {1},
+                interval = 0.1,
+                texture = 'ragebaby'
+            }
         },
         abilities = {
-            Ability(ABILITY_DEFS["strike"]),
-            Ability(ABILITY_DEFS["block"])
+            ABILITY_DEFS["strike"],
+            ABILITY_DEFS["block"]
         }
     }
 }

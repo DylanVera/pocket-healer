@@ -11,7 +11,7 @@ MAX_ACTIONBAR_SIZE = 6
 -- --
 -- -- entity constants
 -- --
--- PLAYER_WALK_SPEED = 60
+-- healer_WALK_SPEED = 60
 
 -- --
 -- -- map constants

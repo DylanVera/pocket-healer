@@ -1,6 +1,6 @@
 StateStack = class{
 	init = function(self)
-		self.state = {}
+		self.states = {}
 	end
 }
 

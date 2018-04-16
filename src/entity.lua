@@ -5,7 +5,7 @@ Entity = class{
 		self.width = def.size.x
 		self.height = def.size.y
 		self.offset = Vector((TILE_SIZE - self.width)/2, (TILE_SIZE - self.height)/2)
-
+		--self.team = def.team
 		self.moving = false
 		self.color = def.color
 		self.facingRight = false
@@ -22,9 +22,9 @@ Entity = class{
 		self.moveRange = 4
 		self.abilities = def.abilities or {}
 		self.animations = self:createAnimations(def.animations)
-		self.maxAp = 7
+		self.maxAp = 5
 		self.ap = self.maxAp
-		self.apRegen = 5
+		self.apRegen = 3
 		self.maxHealth = 3
 		self.health = self.maxHealth
 		self.onCollide = function() end
@@ -32,7 +32,8 @@ Entity = class{
 		self.effects = {}
 
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
-		board.tiles[self.tilePos.y][self.tilePos.x].color = self.color
+		board.tiles[self.tilePos.y][self.tilePos.x].baseColor = self.color
+		board.tiles[self.tilePos.y][self.tilePos.x].color = board.tiles[self.tilePos.y][self.tilePos.x].baseColor
 	end
 }
 
@@ -101,7 +102,7 @@ end
 
 function Entity:move(dir)
 	local tilePos = board:toTilePos(self.position + (dir * TILE_SIZE))
-	if board:isEmpty(tilePos) and self.ap > 0 then
+	if board:isEmpty(tilePos) and self.ap > 0 and not self.moving then
 		self.ap = self.ap - 1
 		if (self.facingRight and dir == VEC_LEFT) or (not self.facingRight and dir == VEC_RIGHT) then
 			self:flip(self.flipOffset)
@@ -123,7 +124,7 @@ end
 function Entity:cast(i)
 	if self.ap >= self.abilities[i].cost then
 		self.ap = self.ap - self.abilities[i].cost
-		self.abilities[i]:execute()
+		Ability(self.abilities[i], self):cast()
 	end
 end
 

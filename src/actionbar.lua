@@ -10,9 +10,6 @@ function ActionBar:cast(i)
 	self.actor:cast(i)
 end
 
-function ActionBar:render()
-end
-
 function ActionBar:changeActor(actor)
 	self.actor = actor
 	self.abilities = actor.abilities
@@ -26,5 +23,16 @@ function ActionBar:draw()
 		love.graphics.rectangle("line", self.position.x + (i - 1) * TILE_SIZE, self.position.y, TILE_SIZE, TILE_SIZE)
 		love.graphics.setNewFont(TILE_SIZE/4)
 		love.graphics.print(i, self.position.x + (TILE_SIZE * 0.1) + (i - 1) * TILE_SIZE, self.position.y + (TILE_SIZE * 0.1))
+	end
+end
+
+function ActionBar:update(dt)
+	for i, ability in ipairs(self.abilities) do
+		if suit.Button(i, self.position.x + (i - 1), self.position.y, TILE_SIZE, TILE_SIZE).hit then
+	    	local neighbors = board:getNeighbors(healer.tilePos)
+	    	for i,n in ipairs(neighbors) do
+	    		n.color = {255,64,96}
+	    	end		
+    	end
 	end
 end

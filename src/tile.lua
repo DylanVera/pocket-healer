@@ -5,7 +5,8 @@ Tile = class{
 		self.isSolid = type.isSolid or false
 		self.effects = {}
 		self.entity = nil	--queue/stack?
-		self.color = type.color or {0,0,0}
+		self.baseColor = type.color or {0,0,0}
+		self.color = self.baseColor
 		self.onEnter = type.onEnter or function() end
 		self.prop = nil
 	end

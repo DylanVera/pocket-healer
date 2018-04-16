@@ -12,7 +12,8 @@ function MoveCommand:execute()
 	local tilePos = board:toTilePos(self.actor.position + (self.dir * TILE_SIZE))
 	if not self.actor.moving then
 		board.tiles[self.oldPos.y][self.oldPos.x].entity = nil	
-		board.tiles[tilePos.y][tilePos.x].color = self.actor.color
+		board.tiles[tilePos.y][tilePos.x].baseColor = self.actor.color
+		board.tiles[tilePos.y][tilePos.x].color = board.tiles[tilePos.y][tilePos.x].baseColor
 		table.insert(commands, self)
 		self.actor.moving = true
 		self.actor.tilePos = self.actor.tilePos + self.dir

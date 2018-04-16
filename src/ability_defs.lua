@@ -1,7 +1,16 @@
 ABILITY_DEFS = {
 	["heal"] = {
 		cost = 1,
-		execute = function()
+		cast = function(self)
+			local neighbors = board:getNeighbors(self.actor.tilePos)
+	    	for i,n in ipairs(neighbors) do
+	    		n.color = {255,64,96}
+	    	end
+	    	self.actor.setState("targeting")
+	    	--handle click event for targeting while in casting state
+	    	--figure out a targeting state to  deal 
+		end,
+		execute = function(self, target) 
 			print("heal")
 		end,
 		undo = function()
@@ -17,8 +26,21 @@ ABILITY_DEFS = {
 	},	
 	["strike"] = {
 		cost = 1,
-		execute = function()
+		damage = 2,
+		cast = function(self)
+			local neighbors = board:getNeighbors(self.actor.tilePos)
+	    	for i,n in ipairs(neighbors) do
+	    		n.color = {255,64,96}
+	    	end	
+ 
+	    	--how are we figuring out what the target is
+	    	self:execute(target)
+		end,
+		execute = function(self, target)
 			print("strike")
+			screen:shake(100)
+			--find out target
+			-- target:damage(damage)
 		end,
 		undo = function()
 		end
@@ -30,7 +52,6 @@ ABILITY_DEFS = {
 			print("block")
 		end,
 		undo = function()
-			print("undo block")
 		end
 	}
 }
