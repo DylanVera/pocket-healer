@@ -36,10 +36,11 @@ function love.update(dt)
     love.keyboard.keysPressed = {}
 end
 
---TODO: if we resize with push from main then imgui breaks
 function love.draw()
+    -- push:start()
     suit.draw()
 	screen:apply()
+    -- push:finish()
     -- gStateStack:render()
 end
 

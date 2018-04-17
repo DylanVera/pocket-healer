@@ -123,7 +123,6 @@ end
 
 function Entity:cast(i)
 	if self.ap >= self.abilities[i].cost then
-		self.ap = self.ap - self.abilities[i].cost
 		Ability(self.abilities[i], self):cast()
 	end
 end

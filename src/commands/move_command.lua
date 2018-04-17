@@ -27,6 +27,8 @@ function MoveCommand:execute()
 				y = self.actor.position.y + self.dir.y * TILE_SIZE
 			})
 		:oncomplete(function() 
+			board:clear()
+			UnitState:updateMoveRange()
 			self.actor.moving = false 
 			self.actor:changeAnimation("idle")
 		end)

@@ -103,7 +103,7 @@ function Board:getSimplePath(p1, p2)
 		--filter tiles with people on them
 		local neighbors = self:getNeighbors(current.tilePos)
 		for i, n in ipairs(neighbors) do
-			if not visited[n] and n:getProp() == nil then
+			if not visited[n] and n:getProp() == nil and n:getEntity() == nil then  
 				table.insert(frontier, n)
 				visited[n] = true
 				cameFrom[n] = current
@@ -172,3 +172,14 @@ end
 function Board:manhattan(p1,p2)
 	return math.abs(p1.x - p2.x) + math.abs(p1.y - p2.y)
 end
+
+function Board:clear()
+	for y, row in ipairs(self.tiles) do
+		for x, tile in ipairs(row) do
+    		if self:isEmpty(tile.tilePos) then
+    			tile.baseColor = {0,0,0}
+    			tile.color = tile.baseColor
+    		end
+		end
+	end
+end	

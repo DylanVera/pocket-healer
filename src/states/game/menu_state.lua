@@ -23,7 +23,5 @@ function MenuState:update(dt)
 end
 
 function MenuState:keypressed(key)
-	if key == "enter" or key == "return" then
-		gameState.switch(PlayState)
-	end
+	gameState.switch(PlayState)
 end

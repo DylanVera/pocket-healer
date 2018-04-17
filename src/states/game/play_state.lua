@@ -45,13 +45,8 @@ function PlayState:draw()
 	enemy2:render()
 	cursor:draw()
 	--box:draw()	
-
-	actionbar:draw()
 	
-	love.graphics.setNewFont(TILE_SIZE/2)
-	love.graphics.setColor(entities[currentUnit].color)
-	love.graphics.print("HP: "..entities[currentUnit].health, ACTIONBAR_RENDER_OFFSET_X - (TILE_SIZE*2), ACTIONBAR_RENDER_OFFSET_Y )
-	love.graphics.print("AP: "..entities[currentUnit].ap, ACTIONBAR_RENDER_OFFSET_X - (TILE_SIZE*2), ACTIONBAR_RENDER_OFFSET_Y + TILE_SIZE/2)
+
 
 	push:finish()
 end
@@ -60,43 +55,8 @@ function PlayState:update(dt)
 	healer:update(dt)
 	-- actionbar:update(dt)
 
-
-	if suit.Button("neighbors", TILE_SIZE, TILE_SIZE, TILE_SIZE * 4, TILE_SIZE).hit then
-    	local neighbors = board:getNeighbors(healer.tilePos)
-    	for i,n in ipairs(neighbors) do
-    		n.color = {255,64,96}
-    	end	
-    end
-
-    if suit.Button("path", TILE_SIZE, TILE_SIZE * 2.5, TILE_SIZE * 4, TILE_SIZE).hit then
-    	local path = board:getSimplePath(healer, enemy)
-    	for i,n in ipairs(path) do
-    		n.color = {128,64,255}
-    	end	
-    end
-
-    if suit.Button("AI move", TILE_SIZE, TILE_SIZE * 4, TILE_SIZE * 4, TILE_SIZE).hit then
-    	local path = board:getSimplePath(cursor, entities[currentUnit])
-    	local moveDir = table.remove(path).tilePos - cursor.tilePos
-    	cursor.tilePos = cursor.tilePos + moveDir
-    	cursor.position = board:toWorldPos(cursor.tilePos)
-    end
-
-    if suit.Button("Move Range", TILE_SIZE, TILE_SIZE * 5.5, TILE_SIZE * 4, TILE_SIZE).hit then
-    	local tiles = board:getSimpleReachable(entities[currentUnit].tilePos, entities[currentUnit].ap)
-    	for i, t in ipairs(tiles) do
-    		t.color = {64, 196, 128}
-    	end
-    end
-
     if suit.Button("Clear", TILE_SIZE, TILE_SIZE * 7, TILE_SIZE * 4, TILE_SIZE).hit then
-    	for y, row in ipairs(board.tiles) do
-    		for x, tile in ipairs(row) do
-	    		if board:isEmpty(tile.tilePos) then
-	    			tile.color = {0,0,0}
-	    		end
-    		end
-    	end
+    	board:clear()
     end
 end
 
@@ -118,19 +78,7 @@ function PlayState:keypressed(key)
 		-- entities[currentUnit]:move(VEC_RIGHT)
 	end
 
-	if key == "1" then
-		actionbar:cast(1)
-	elseif key == "2" then
-		actionbar:cast(2)
-	elseif key == "3" then
-		actionbar:cast(3)
-	elseif key == "4" then
-		actionbar:cast(4)
-	elseif key == "5" then
-		actionbar:cast(5)
-	elseif key == "6" then
-		actionbar:cast(6)
-	end
+	
 	
 	if key == "x" then
 		local entity = board:entityAt(cursor.tilePos)
@@ -166,13 +114,17 @@ function PlayState:mousepressed(x, y, button, istouch)
 	local nx, ny = push:toGame(x,y)
 	local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
 	if tile ~= nil then
-		if button == 1 then		
-			local path = board:getSimplePath(entities[currentUnit], tile)
-			if #path > 0 then
-	    		local moveDir = table.remove(path).tilePos - entities[currentUnit].tilePos
-	    		entities[currentUnit]:move(moveDir)
-	    	end
+		if button == 1 then
+			cursor.tilePos = tile.tilePos
+			cursor.position = board:toWorldPos(cursor.tilePos)
 		end
+		-- if button == 1 then		
+		-- 	local path = board:getSimplePath(entities[currentUnit], tile)
+		-- 	if #path > 0 then
+	 --    		local moveDir = table.remove(path).tilePos - entities[currentUnit].tilePos
+	 --    		entities[currentUnit]:move(moveDir)
+	 --    	end
+		-- end
 		if button == 2 then
 			tile:toggleSolid()
 		end
