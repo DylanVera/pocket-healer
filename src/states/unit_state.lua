@@ -67,13 +67,15 @@ function UnitState:keypressed(key)
 end
 
 function UnitState:enter()
+	actionbar:changeActor(self.unit)
 	self:updateMoveRange()
 end
 
 function UnitState:leave()
-	for i, t in ipairs(self.moveRange) do
-		t.color = t.baseColor
-	end	
+	board:clear()
+	-- for i, t in ipairs(self.moveRange) do
+	-- 	t.color = t.baseColor
+	-- end	
 end
 
 function UnitState:updateMoveRange()

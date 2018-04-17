@@ -6,7 +6,7 @@ end
 function MenuState:enter()
 end
 
-function MenuState:exit()
+function MenuState:leave()
 end
 
 function MenuState:draw()
@@ -23,5 +23,5 @@ function MenuState:update(dt)
 end
 
 function MenuState:keypressed(key)
-	gameState.switch(PlayState)
+	gameState.push(PlayState)
 end

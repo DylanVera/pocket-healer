@@ -65,10 +65,15 @@ end
 function Entity:damage(dmg)
     self.health = self.health - dmg
     if self.health <= 0 then
-    	print("you got dead")
-    	--gameover state (just go back to menu for now)
-    	gameState.switch(MenuState)
+    	print("you got dead")   
+    	--kill the thing
+    	--gameState.switch(MenuState)
     end
+end
+
+function Entity:heal(hp)
+    self.health = self.health + hp
+    self.health = math.min(self.health, self.maxHealth)
 end
 
 function Entity:processAI(params, dt)

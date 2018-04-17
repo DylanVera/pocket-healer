@@ -21,6 +21,7 @@ function TargetState:leave()
 	for i,n in ipairs(self.tiles) do
 		n.color = n.baseColor
 	end
+	UnitState:updateMoveRange()
 end
 
 function TargetState:keypressed(key)
@@ -53,13 +54,12 @@ end
 function TargetState:mousepressed(x, y, button, isTouch)
 	local nx, ny = push:toGame(x,y)
 	local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
+	cursor.tilePos = tile.tilePos
+	cursor.position = board:toWorldPos(cursor.tilePos)
+	
 	if tile ~= nil then
 		if button == 1 then		
-			for i, n in ipairs(self.tiles) do
-				if n == tile then
-					self.ability:execute()
-				end
-			end
+			self:checkTarget()
 		end
 	end
 	
@@ -67,15 +67,15 @@ function TargetState:mousepressed(x, y, button, isTouch)
 end	
 
 function TargetState:checkTarget()
-	--if self.ability.targetType == UNIT_TARGET then
-	--end
 	local tile = board:getTile(cursor.tilePos)
 	local entity = board:entityAt(cursor.tilePos)
 	if tile ~= nil then
 		for i, n in ipairs(self.tiles) do
 			if n == tile then
-				self.ability:execute()
-				gameState.pop()
+				if self.ability.targetType == UNIT_TARGET and entity ~= nil then
+					self.ability:execute(entity)
+					gameState.pop()
+				end
 			end
 		end
 	end

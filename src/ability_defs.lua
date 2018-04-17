@@ -2,6 +2,8 @@ ABILITY_DEFS = {
 	["heal"] = {
 		cost = 1,
 		targetType = UNIT_TARGET,
+		value = 1,
+		range = 2,
 		cast = function(self)
 			local neighbors = board:getNeighbors(self.actor.tilePos)
 	    	
@@ -13,6 +15,7 @@ ABILITY_DEFS = {
 		end,
 		execute = function(self, target) 
 			print("heal")
+			target:heal(self.value)
 			self.actor.ap = self.actor.ap - self.cost
 		end,
 		undo = function()
@@ -20,6 +23,7 @@ ABILITY_DEFS = {
 	},
 	["smite"] = {
 		cost = 1,
+		range = 2,
 		targetType = UNIT_TARGET,
 		execute = function()
 			print("smite")
@@ -29,19 +33,20 @@ ABILITY_DEFS = {
 	},	
 	["strike"] = {
 		cost = 1,
-		damage = 2,
+		value = 2,
 		targetType = UNIT_TARGET,
 		cast = function(self)
 			local neighbors = board:getNeighbors(self.actor.tilePos)
-	    	for i,n in ipairs(neighbors) do
-	    		n.color = {255,64,96}
-	    	end	
- 
+	    	
+	    	TargetState.tiles = neighbors
+	    	TargetState.ability = self
+	    	gameState.push(TargetState)
 	    	--how are we figuring out what the target is
-	    	self:execute(target)
 		end,
 		execute = function(self, target)
 			print("strike")
+			target:damage(self.value)
+			self.actor.ap = self.actor.ap - self.cost
 			screen:shake(100)
 			--find out target
 			-- target:damage(damage)

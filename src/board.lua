@@ -182,4 +182,7 @@ function Board:clear()
     		end
 		end
 	end
-end	
+end
+
+function Board:getSquare(center, size)
+end

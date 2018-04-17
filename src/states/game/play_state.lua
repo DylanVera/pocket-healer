@@ -7,7 +7,7 @@ function PlayState:init()
   	tank = Entity(ENTITY_DEFS['tank'], Vector(2,3))
   	tank:changeAnimation("idle")
     enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
-    enemy2 = Entity(ENTITY_DEFS['enemy'], Vector(5,5))
+    enemy2 = Entity(ENTITY_DEFS['enemy'], Vector(4,4))
     enemy2:changeAnimation("idle")
     cursor = Cursor(Vector(2,2))
     --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
@@ -26,6 +26,7 @@ function PlayState:init()
 	-- end)
 	currentUnit = 1
     commands = {}
+    tank.health = 1
     actionbar = ActionBar(healer)
     entities = {tank, enemy, healer, enemy2}
 end 
@@ -55,7 +56,7 @@ function PlayState:update(dt)
 	healer:update(dt)
 	-- actionbar:update(dt)
 
-    if suit.Button("Clear", TILE_SIZE, TILE_SIZE * 7, TILE_SIZE * 4, TILE_SIZE).hit then
+    if suit.Button("Clear", TILE_SIZE, TILE_SIZE, TILE_SIZE * 4, TILE_SIZE).hit then
     	board:clear()
     end
 end
@@ -80,34 +81,13 @@ function PlayState:keypressed(key)
 
 	
 	
-	if key == "x" then
+	if key == "x" or key == "space" then
 		local entity = board:entityAt(cursor.tilePos)
 		if entity ~= nil then
 			UnitState.unit = entity
 			gameState.push(UnitState)
 		end
 	end
-
-	if key == "space" then
-		self:endTurn()
-	end
-
- 	-- 	if key == "z" then
-	-- 	if #commands > 0 then
-	-- 		commands[#commands]:undo()
-	-- 	else
-	-- 		print("no commands to undo")
-	-- 	end
-	-- end
-	-- --be able to undo a redo
-	-- if key == "r" then
-	-- 	if commands.last >= commands.first then
-	-- 		healer.position = board:toWorldPos(commands[commands.first].oldPos)
-	-- 		print(commands[commands.first].oldPos)
-	-- 	else
-	-- 		print("no commands to undo")
-	-- 	end
-	-- end
 end
 
 function PlayState:mousepressed(x, y, button, istouch)

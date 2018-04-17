@@ -23,7 +23,8 @@ function love.load()
 
     -- love.keyboard.keysPressed = {}
     gameState.registerEvents()
-    gameState.switch(MenuState)   
+    gameState.switch(MenuState)
+    -- gameState.push(MenuState)   
 end
 
 function love.update(dt)
