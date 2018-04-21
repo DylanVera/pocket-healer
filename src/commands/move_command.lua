@@ -1,9 +1,10 @@
 MoveCommand = class{
 	--_includes = Command,
-	init = function(self, actor, dir)
+	init = function(self, actor, dir, isTeleport)
 		self.dir = dir
 		self.actor = actor
 		self.oldPos = board:toTilePos(actor.position)
+		self.isTeleport = isTeleport
 	end
 }
 
@@ -19,19 +20,29 @@ function MoveCommand:execute()
 		self.actor.tilePos = self.actor.tilePos + self.dir
 		board.tiles[tilePos.y][tilePos.x].entity = self.actor
 		self.actor:changeAnimation("walk")
-		flux.to(
+
+		if not self.isTeleport then
+			flux.to(
 			self.actor.position, 
 			self.actor.moveSpeed, 
 			{ 
 				x = self.actor.position.x + self.dir.x * TILE_SIZE, 
 				y = self.actor.position.y + self.dir.y * TILE_SIZE
 			})
-		:oncomplete(function() 
+			:oncomplete(function() 
+				board:clear()
+				UnitState:updateMoveRange()
+				self.actor.moving = false 
+				self.actor:changeAnimation("idle")
+			end)
+		else
+			self.actor.position = self.actor.position + self.dir * TILE_SIZE
+			self.actor.moving = false
+			self.actor:changeAnimation("idle")
 			board:clear()
 			UnitState:updateMoveRange()
-			self.actor.moving = false 
-			self.actor:changeAnimation("idle")
-		end)
+		end
+		
 	end
 end
 

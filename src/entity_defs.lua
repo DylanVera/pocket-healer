@@ -43,16 +43,15 @@ ENTITY_DEFS = {
         },
         animations = {
             ['idle'] = {
-                frames = {1, 2, 3, 4},
+                frames = {1},
                 interval = 0.1,
-                texture = 'tiles'
+                texture = 'ragebaby'
             },
             ['walk'] = {
-                frames = {5, 6, 7, 8},
+                frames = {1},
                 interval = 0.1,
-                texture = 'tiles'
-            },
-            
+                texture = 'ragebaby'
+            }
         },
         abilities = {
             ABILITY_DEFS["strike"],
@@ -69,16 +68,6 @@ ENTITY_DEFS = {
         },
         color = {128, 48, 64},
         animations = {
-            ['idle'] = {
-                frames = {1},
-                interval = 0.1,
-                texture = 'ragebaby'
-            },
-            ['walk'] = {
-                frames = {1},
-                interval = 0.1,
-                texture = 'ragebaby'
-            }
         },
         abilities = {
             ABILITY_DEFS["strike"],

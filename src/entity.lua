@@ -105,21 +105,27 @@ function Entity:render()
     love.graphics.draw(gTextures[anim.texture], gFrames[anim.texture][anim:getCurrentFrame()], self.position.x + self.offset.x , self.position.y + self.offset.y, 0, scaledW, scaledH)
 end
 
-function Entity:move(dir)
-	local tilePos = board:toTilePos(self.position + (dir * TILE_SIZE))
-	if board:isEmpty(tilePos) and self.ap > 0 and not self.moving then
-		self.ap = self.ap - 1
+--use correct number of ap
+function Entity:move(path)
+	local port = #path > 1
+	--self:flip()
+	local tilePos = path[1].tilePos
+	if board:isEmpty(tilePos) and self.ap >= #path and not self.moving then
+		self.ap = self.ap - #path
+		local dir = path[1].tilePos - self.tilePos
 		if (self.facingRight and dir == VEC_LEFT) or (not self.facingRight and dir == VEC_RIGHT) then
-			self:flip(self.flipOffset)
+			self:flip()
 		end
-		MoveCommand(self, dir):execute()
+		
+		print(port)
+		MoveCommand(self, dir, port):execute()
 	end
 end
 
 --this is definitely gonna become a problem some day...
 function Entity:flip()
 	self.facingRight = not self.facingRight
-	if self.facingRight then
+	if self.facingRight then 
 		self.offset.x = self.offset.x + self.flipOffset
 	else
 		self.offset.x = self.offset.x - self.flipOffset

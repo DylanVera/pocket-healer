@@ -10,6 +10,7 @@ function PlayState:init()
     enemy2 = Entity(ENTITY_DEFS['enemy'], Vector(4,4))
     enemy2:changeAnimation("idle")
     cursor = Cursor(Vector(2,2))
+    print(enemy2.offset)
     --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
 
  --    box.onCollide = function(actor, dir)
@@ -43,7 +44,7 @@ function PlayState:draw()
 	tank:render()
 	healer:render()
 	enemy:draw()
-	enemy2:render()
+	enemy2:draw()
 	cursor:draw()
 	--box:draw()	
 	
@@ -58,6 +59,10 @@ function PlayState:update(dt)
 
     if suit.Button("Clear", TILE_SIZE, TILE_SIZE, TILE_SIZE * 4, TILE_SIZE).hit then
     	board:clear()
+    end
+
+    if suit.Button("End Turn", TILE_SIZE, TILE_SIZE * 2.5, TILE_SIZE * 4, TILE_SIZE).hit then
+    	self:endTurn()
     end
 end
 
@@ -123,7 +128,10 @@ end
 
 function PlayState:endTurn()
 	--move all this garbage to an entity end turn function
-	entities[currentUnit]:endTurn()
-	currentUnit = currentUnit % #entities + 1
-	actionbar:changeActor(entities[currentUnit])
+	-- entities[currentUnit]:endTurn()
+	-- currentUnit = currentUnit % #entities + 1
+	-- actionbar:changeActor(entities[currentUnit])
+	for i, e in ipairs(entities) do
+		e:endTurn()
+	end
 end

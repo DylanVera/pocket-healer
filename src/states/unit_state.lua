@@ -38,11 +38,17 @@ function UnitState:keypressed(key)
 		-- entities[currentUnit]:move(VEC_RIGHT)
 	end
 
+	--just use tile pos not
 	if key == "x" then
+		-- local path = board:getSimplePath(self.unit, cursor)
+		-- for i, t in ipairs(path) do
+		-- 	local moveDir = table.remove(path).tilePos - self.unit.tilePos
+  --   		self.unit:move(moveDir)()
+		-- end
 		local path = board:getSimplePath(self.unit, cursor)
-		for i, t in ipairs(path) do
-			local moveDir = table.remove(path).tilePos - self.unit.tilePos
-    		self.unit:move(moveDir)
+		local moveDir = cursor.tilePos - self.unit.tilePos
+		if #path > 0 then
+			self.unit:move(path)
 		end
     	--self.unit.position = board:toWorldPos(self.unit.tilePos)
 	end
@@ -88,13 +94,14 @@ end
 function UnitState:mousepressed(x, y, button, isTouch)
 	PlayState:mousepressed(x,y,button,isTouch)
 	local nx, ny = push:toGame(x,y)
-	local tile = board:getTile(board:toTilePos(Vector(nx,ny)))
+	local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
 	if tile ~= nil then
 		if button == 1 then
 			local path = board:getSimplePath(self.unit, tile)
 			if #path > 0 then
-	    		local moveDir = table.remove(path).tilePos - self.unit.tilePos
-	    		self.unit:move(moveDir)
+	    		local moveDir = path[#path].tilePos - self.unit.tilePos
+
+	    		self.unit:move(path)
 	    	end
 		end
 	end	

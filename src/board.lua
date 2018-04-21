@@ -130,6 +130,25 @@ function Board:getSimpleReachable(point, dist)
 	return tiles
 end
 
+-- if this tile's move cost is less than the total distance the unit can move
+--    For each of tile's neighbors
+--      cost of movement = current tile's movement cost + neighbor's terrain difficulty
+--      if neighbor has no move cost OR its move cost > cost of movement
+--        neighbors movement cost = cost of movement
+--        add neighbor to list of tiles whose neighbors you need to check
+function Board:getReachable(point, dist)
+	local tiles = {}
+	for y, row in ipairs(self.tiles) do
+		for x, tile in ipairs(row) do
+			if self:isEmpty(tile.tilePos) and #self:getSimplePath(point, tile) <= dist then
+				table.insert(tiles, tile)
+			end
+		end
+	end
+
+
+end
+
 function Board:isPawnSpace(tile)
 end
 
@@ -160,7 +179,6 @@ function Board:getNeighbors(tile)
 	--filter out walls and invalid stuff
 	for i, dir in ipairs(DIR_VECTORS) do
 		local tile = board:getTile(tile + dir)
-		print(tile)
 		if tile ~= nil and not tile.isSolid then
 			table.insert(neighbors, tile)
 		end
