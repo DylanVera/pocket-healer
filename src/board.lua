@@ -15,10 +15,12 @@ function Board:draw()
 	for y, row in ipairs(self.tiles) do
 		for x, cell in ipairs(row) do
 			love.graphics.setColor(self.tiles[y][x].color)
-			love.graphics.rectangle('fill', self.position.x + (x - 1) * TILE_SIZE, self.position.y + (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+			love.graphics.rectangle('fill', cell.position.x, cell.position.y, TILE_SIZE, TILE_SIZE)
+			--love.graphics.rectangle('fill', self.position.x + (x - 1) * TILE_SIZE, self.position.y + (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 			love.graphics.setColor(0, 0, 0)
 			love.graphics.setLineWidth(TILE_SIZE * 0.1)
-			love.graphics.rectangle('line', self.position.x + (x - 1) * TILE_SIZE, self.position.y + (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+			love.graphics.rectangle('line', cell.position.x, cell.position.y, TILE_SIZE, TILE_SIZE)
+			--love.graphics.rectangle('line', self.position.x + (x - 1) * TILE_SIZE, self.position.y + (y - 1) * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 		end
 	end
 end
@@ -136,17 +138,23 @@ end
 --      if neighbor has no move cost OR its move cost > cost of movement
 --        neighbors movement cost = cost of movement
 --        add neighbor to list of tiles whose neighbors you need to check
+
 function Board:getReachable(point, dist)
 	local tiles = {}
 	for y, row in ipairs(self.tiles) do
 		for x, tile in ipairs(row) do
-			if self:isEmpty(tile.tilePos) and #self:getSimplePath(point, tile) <= dist then
-				table.insert(tiles, tile)
+			local path = self:getSimplePath(self.tiles[point.y][point.x], tile)
+			if #path <= dist then
+				for i, n in ipairs(path) do
+					if not contains(tiles, n) then
+						table.insert(tiles, n)
+					end
+				end
 			end
 		end
 	end
 
-
+	return tiles
 end
 
 function Board:isPawnSpace(tile)
@@ -189,6 +197,10 @@ end
 
 function Board:manhattan(p1,p2)
 	return math.abs(p1.x - p2.x) + math.abs(p1.y - p2.y)
+end
+
+function Board:euclidean(p1, p2)
+	return math.sqrt(math.pow(p2.x - p1.x, 2) + math.pow(p2.y - p1.y,2))
 end
 
 function Board:clear()

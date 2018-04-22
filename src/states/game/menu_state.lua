@@ -17,11 +17,9 @@ function MenuState:draw()
 end
 
 function MenuState:update(dt)
-	if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-		gStateStack:push(PlayState());
-	end
 end
 
 function MenuState:keypressed(key)
 	gameState.push(PlayState)
+	gStateStack:push(PlayState)
 end

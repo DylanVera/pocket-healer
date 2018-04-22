@@ -1,6 +1,7 @@
 Tile = class{
 	init = function(self, type, position)
 		self.tilePos = position
+		self.position = Vector(TILE_SIZE * (self.tilePos.x -1) + MAP_RENDER_OFFSET_X, -TILE_SIZE)
 		self.center = (self.tilePos * TILE_SIZE) + Vector(TILE_SIZE/2, TILE_SIZE/2)
 		self.isSolid = type.isSolid or false
 		self.effects = {}
@@ -9,6 +10,7 @@ Tile = class{
 		self.color = self.baseColor
 		self.onEnter = type.onEnter or function() end
 		self.prop = nil
+		flux.to(self.position, 0.75, {x = self.position.x, y = (self.tilePos.y-1) * TILE_SIZE + MAP_RENDER_OFFSET_Y}):ease("backout"):delay(math.random()/(self.tilePos.y+1))
 	end
 }
 

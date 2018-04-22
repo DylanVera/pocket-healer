@@ -59,3 +59,13 @@ function print_r ( t )
     end
     print()
 end
+
+--returns true if key is found inside table
+function contains(table, key)
+    for i, n in ipairs(table) do
+        if key == n then
+            return true
+        end
+    end
+    return false
+end

@@ -1,12 +1,15 @@
 Entity = class{
 	init = function(self, def, position)
+		-- self.tilePos = position
+		-- self.position = board:toWorldPos(self.tilePos)
 		self.tilePos = position
-		self.position = board:toWorldPos(self.tilePos)
+		self.position = Vector(TILE_SIZE * (self.tilePos.x -1) + MAP_RENDER_OFFSET_X, -TILE_SIZE * love.math.random(7))
 		self.width = def.size.x
 		self.height = def.size.y
 		self.offset = Vector((TILE_SIZE - self.width)/2, (TILE_SIZE - self.height)/2)
 		--self.team = def.team
 		self.moving = false
+
 		self.color = def.color
 		self.facingRight = false
 
@@ -30,7 +33,8 @@ Entity = class{
 		self.onCollide = function() end
 		self.flipOffset = def.flipOffset or 0
 		self.effects = {}
-
+		self.alive = true
+		flux.to(self.position, 0.75, {x = self.position.x, y = (self.tilePos.y-1) * TILE_SIZE + MAP_RENDER_OFFSET_Y}):ease("backout"):delay(math.random()/(self.tilePos.y+1))
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 		board.tiles[self.tilePos.y][self.tilePos.x].baseColor = self.color
 		board.tiles[self.tilePos.y][self.tilePos.x].color = board.tiles[self.tilePos.y][self.tilePos.x].baseColor
@@ -66,6 +70,10 @@ function Entity:damage(dmg)
     self.health = self.health - dmg
     if self.health <= 0 then
     	print("you got dead")   
+    	self.alive = false
+    	board.tiles[self.tilePos.y][self.tilePos.x].baseColor = {0,0,0}
+    	board.tiles[self.tilePos.y][self.tilePos.x].color = {0,0,0}
+    	board.tiles[self.tilePos.y][self.tilePos.x].entity = nil
     	--kill the thing
     	--gameState.switch(MenuState)
     end

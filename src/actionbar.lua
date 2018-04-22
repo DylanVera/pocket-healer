@@ -16,7 +16,7 @@ function ActionBar:changeActor(actor)
 end
 
 function ActionBar:draw()
-	for i,ability in ipairs(self.abilities) do
+	for i=1,MAX_ACTIONBAR_SIZE do
 		love.graphics.setColor(128,128,128)
 		love.graphics.rectangle("fill", self.position.x + (i - 1) * TILE_SIZE, self.position.y, TILE_SIZE, TILE_SIZE)
 		love.graphics.setColor(0,0,0)

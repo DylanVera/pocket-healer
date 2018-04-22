@@ -100,7 +100,6 @@ function UnitState:mousepressed(x, y, button, isTouch)
 			local path = board:getSimplePath(self.unit, tile)
 			if #path > 0 then
 	    		local moveDir = path[#path].tilePos - self.unit.tilePos
-
 	    		self.unit:move(path)
 	    	end
 		end

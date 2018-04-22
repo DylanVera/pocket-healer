@@ -6,11 +6,11 @@ function PlayState:init()
   	healer:changeAnimation("idle")
   	tank = Entity(ENTITY_DEFS['tank'], Vector(2,3))
   	tank:changeAnimation("idle")
-    enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
+    --enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
     enemy2 = Entity(ENTITY_DEFS['enemy'], Vector(4,4))
-    enemy2:changeAnimation("idle")
+    --enemy2:changeAnimation("idle")
     cursor = Cursor(Vector(2,2))
-    print(enemy2.offset)
+
     --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
 
  --    box.onCollide = function(actor, dir)
@@ -29,23 +29,36 @@ function PlayState:init()
     commands = {}
     tank.health = 1
     actionbar = ActionBar(healer)
-    entities = {tank, enemy, healer, enemy2}
+
+    allies = {tank, healer}
+    enemies = {enemy2}
+    entities = {allies, enemies}
+    enemiesKilled = 0
 end 
 
 function PlayState:enter()
 end
 
-function PlayState:exit()
+function PlayState:leave()
 end
 
 function PlayState:draw()
 	push:start()
 	board:draw()
-	tank:render()
-	healer:render()
-	enemy:draw()
-	enemy2:draw()
-	cursor:draw()
+	
+	for i, team in ipairs(entities) do
+		for j, unit in ipairs(team) do
+			if unit.alive then
+				if i == 1 then
+					unit:render()
+				else
+					unit:draw()
+				end
+			end
+		end
+	end
+
+	cursor:draw() 
 	--box:draw()	
 	
 
@@ -54,7 +67,22 @@ function PlayState:draw()
 end
 
 function PlayState:update(dt)
-	healer:update(dt)
+	-- remove entity from the table if health is <= 0
+	for i, team in ipairs(entities) do
+		for j, entity in ipairs(team) do
+			if entity.health <= 0 then
+		        entity.dead = true
+		        enemiesKilled = enemiesKilled + 1
+		        if enemiesKilled == #enemies then
+		        	gameState.switch(MenuState)
+		        end
+		    elseif not entity.dead then
+		        entity:processAI({room = self}, dt)
+		        entity:update(dt)
+    		end
+		end
+	end
+   
 	-- actionbar:update(dt)
 
     if suit.Button("Clear", TILE_SIZE, TILE_SIZE, TILE_SIZE * 4, TILE_SIZE).hit then
@@ -103,15 +131,13 @@ function PlayState:mousepressed(x, y, button, istouch)
 			cursor.tilePos = tile.tilePos
 			cursor.position = board:toWorldPos(cursor.tilePos)
 		end
-		-- if button == 1 then		
-		-- 	local path = board:getSimplePath(entities[currentUnit], tile)
-		-- 	if #path > 0 then
-	 --    		local moveDir = table.remove(path).tilePos - entities[currentUnit].tilePos
-	 --    		entities[currentUnit]:move(moveDir)
-	 --    	end
-		-- end
+
 		if button == 2 then
-			tile:toggleSolid()
+			if tile:getEntity() == nil then
+				local e = Entity(ENTITY_DEFS['enemy'], tile.tilePos)
+				table.insert(enemies, e)
+				table.insert(entities[ENEMY_TEAM], e)
+			end
 		end
 	end
 end
@@ -131,7 +157,9 @@ function PlayState:endTurn()
 	-- entities[currentUnit]:endTurn()
 	-- currentUnit = currentUnit % #entities + 1
 	-- actionbar:changeActor(entities[currentUnit])
-	for i, e in ipairs(entities) do
-		e:endTurn()
+	for i, team in ipairs(entities) do
+		for j, entity in ipairs(team) do
+			entity:endTurn()
+		end
 	end
 end
