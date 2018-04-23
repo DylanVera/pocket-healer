@@ -11,5 +11,12 @@ GAME_OBJECT_DEFS = {
         solid = true,
         pushable = true,
         color = {196,64,196},
+    },
+    food = {
+        type = "food",
+        solid = true,
+        color = {196, 32, 96},
+        width = TILE_SIZE/4,
+        height = TILE_SIZE/4
     }
 }

@@ -62,8 +62,6 @@ function TargetState:mousepressed(x, y, button, isTouch)
 			self:checkTarget()
 		end
 	end
-	
-	gameState.pop()
 end	
 
 function TargetState:checkTarget()
@@ -73,10 +71,10 @@ function TargetState:checkTarget()
 		for i, n in ipairs(self.tiles) do
 			if n == tile then
 				if self.ability.targetType == UNIT_TARGET and entity ~= nil then
-					self.ability:execute(entity)
-					gameState.pop()
+					self.ability:execute(entity)			
 				end
 			end
 		end
+		gameState.pop()
 	end
 end

@@ -138,7 +138,6 @@ end
 --      if neighbor has no move cost OR its move cost > cost of movement
 --        neighbors movement cost = cost of movement
 --        add neighbor to list of tiles whose neighbors you need to check
-
 function Board:getReachable(point, dist)
 	local tiles = {}
 	for y, row in ipairs(self.tiles) do
@@ -155,9 +154,6 @@ function Board:getReachable(point, dist)
 	end
 
 	return tiles
-end
-
-function Board:isPawnSpace(tile)
 end
 
 function Board:getTile(tile)
@@ -200,7 +196,7 @@ function Board:manhattan(p1,p2)
 end
 
 function Board:euclidean(p1, p2)
-	return math.sqrt(math.pow(p2.x - p1.x, 2) + math.pow(p2.y - p1.y,2))
+	return math.floor(math.sqrt(math.pow(p2.x - p1.x, 2) + math.pow(p2.y - p1.y,2)))
 end
 
 function Board:clear()

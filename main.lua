@@ -39,10 +39,12 @@ end
 
 function love.draw()
     -- push:start()
+    
     suit.draw()
 	screen:apply()
     -- push:finish()
     -- gStateStack:render()
+
 end
 
 function love.resize(w, h)

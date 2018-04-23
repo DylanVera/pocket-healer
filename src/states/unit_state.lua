@@ -61,10 +61,6 @@ function UnitState:keypressed(key)
 		actionbar:cast(3)
 	elseif key == "4" then
 		actionbar:cast(4)
-	elseif key == "5" then
-		actionbar:cast(5)
-	elseif key == "6" then
-		actionbar:cast(6)
 	end
 
 	if key == "space" then
@@ -104,4 +100,7 @@ function UnitState:mousepressed(x, y, button, isTouch)
 	    	end
 		end
 	end	
+	if button == 2 then
+		gameState.pop()
+	end
 end

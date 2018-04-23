@@ -1,12 +1,15 @@
 PlayState = {}
 
 function PlayState:init()
+end 
+
+function PlayState:enter()
 	board = Board()
-    healer = Entity(ENTITY_DEFS['healer'], Vector(2,2))
+    healer = Entity(ENTITY_DEFS['tank'], Vector(2,2))
   	healer:changeAnimation("idle")
-  	tank = Entity(ENTITY_DEFS['tank'], Vector(2,3))
-  	tank:changeAnimation("idle")
-    --enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
+  	bigboy = Entity(ENTITY_DEFS['bigboy'], Vector(2,3))
+  	bigboy:changeAnimation("idle")
+    enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
     enemy2 = Entity(ENTITY_DEFS['enemy'], Vector(4,4))
     --enemy2:changeAnimation("idle")
     cursor = Cursor(Vector(2,2))
@@ -24,19 +27,16 @@ function PlayState:init()
 	-- 	local path = board:getSimplePath(enemy, healer)
  --    	local moveDir = table.remove(path).tilePos - enemy.tilePos 
  --    	enemy:move(moveDir)
-	-- end)
+	-- end)?>
 	currentUnit = 1
     commands = {}
-    tank.health = 1
+    bigboy.health = 1
     actionbar = ActionBar(healer)
 
-    allies = {tank, healer}
-    enemies = {enemy2}
+    allies = {bigboy, healer}
+    enemies = {enemy, enemy2}
     entities = {allies, enemies}
     enemiesKilled = 0
-end 
-
-function PlayState:enter()
 end
 
 function PlayState:leave()
@@ -45,7 +45,7 @@ end
 function PlayState:draw()
 	push:start()
 	board:draw()
-	
+	cursor:draw()
 	for i, team in ipairs(entities) do
 		for j, unit in ipairs(team) do
 			if unit.alive then
@@ -57,26 +57,19 @@ function PlayState:draw()
 			end
 		end
 	end
-
-	cursor:draw() 
-	--box:draw()	
-	
-
-
+	love.graphics.setColor(255,255,255)
+	love.graphics.print("fps: " .. love.timer.getFPS(), 0,0)
 	push:finish()
 end
 
 function PlayState:update(dt)
 	-- remove entity from the table if health is <= 0
+	if enemiesKilled == #enemies then
+    	gameState.switch(MenuState)
+    end
 	for i, team in ipairs(entities) do
 		for j, entity in ipairs(team) do
-			if entity.health <= 0 then
-		        entity.dead = true
-		        enemiesKilled = enemiesKilled + 1
-		        if enemiesKilled == #enemies then
-		        	gameState.switch(MenuState)
-		        end
-		    elseif not entity.dead then
+			if entity.alive then
 		        entity:processAI({room = self}, dt)
 		        entity:update(dt)
     		end
@@ -126,17 +119,14 @@ end
 function PlayState:mousepressed(x, y, button, istouch)
 	local nx, ny = push:toGame(x,y)
 	local tile = board:getTile(board:toTilePos(Vector(nx, ny)))
+	-- print(board:euclidean(healer.tilePos, tile.tilePos))
 	if tile ~= nil then
 		if button == 1 then
 			cursor.tilePos = tile.tilePos
 			cursor.position = board:toWorldPos(cursor.tilePos)
-		end
-
-		if button == 2 then
-			if tile:getEntity() == nil then
-				local e = Entity(ENTITY_DEFS['enemy'], tile.tilePos)
-				table.insert(enemies, e)
-				table.insert(entities[ENEMY_TEAM], e)
+			if tile:getEntity() ~= nil then
+				UnitState.unit = tile:getEntity()
+				gameState.push(UnitState)
 			end
 		end
 	end

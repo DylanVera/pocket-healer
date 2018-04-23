@@ -7,7 +7,7 @@ Entity = class{
 		self.width = def.size.x
 		self.height = def.size.y
 		self.offset = Vector((TILE_SIZE - self.width)/2, (TILE_SIZE - self.height)/2)
-		--self.team = def.team
+		self.team = def.team
 		self.moving = false
 
 		self.color = def.color
@@ -34,6 +34,7 @@ Entity = class{
 		self.flipOffset = def.flipOffset or 0
 		self.effects = {}
 		self.alive = true
+		self.stomach = {}
 		flux.to(self.position, 0.75, {x = self.position.x, y = (self.tilePos.y-1) * TILE_SIZE + MAP_RENDER_OFFSET_Y}):ease("backout"):delay(math.random()/(self.tilePos.y+1))
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 		board.tiles[self.tilePos.y][self.tilePos.x].baseColor = self.color
@@ -70,10 +71,7 @@ function Entity:damage(dmg)
     self.health = self.health - dmg
     if self.health <= 0 then
     	print("you got dead")   
-    	self.alive = false
-    	board.tiles[self.tilePos.y][self.tilePos.x].baseColor = {0,0,0}
-    	board.tiles[self.tilePos.y][self.tilePos.x].color = {0,0,0}
-    	board.tiles[self.tilePos.y][self.tilePos.x].entity = nil
+    	self:kill()
     	--kill the thing
     	--gameState.switch(MenuState)
     end
@@ -153,4 +151,14 @@ end
 
 function Entity:startTurn()
 	--beginning of turn effects and stuff
+end
+
+function Entity:kill()
+	self.alive = false
+	if self.team == ENEMY_TEAM then
+		enemiesKilled = enemiesKilled + 1
+	end
+	board.tiles[self.tilePos.y][self.tilePos.x].baseColor = {0,0,0}
+	board.tiles[self.tilePos.y][self.tilePos.x].color = {0,0,0}
+	board.tiles[self.tilePos.y][self.tilePos.x].entity = nil
 end

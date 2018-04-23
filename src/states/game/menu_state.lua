@@ -21,5 +21,4 @@ end
 
 function MenuState:keypressed(key)
 	gameState.push(PlayState)
-	gStateStack:push(PlayState)
 end

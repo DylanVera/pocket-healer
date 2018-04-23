@@ -7,6 +7,7 @@ ENTITY_IDS = {
 ENTITY_DEFS = {
     ['healer'] = {
         name = 'healer',
+        team = 'ALLY_TEAM',
         size = {
             x = TILE_SIZE * 0.6,
             y = TILE_SIZE * 0.6
@@ -37,6 +38,7 @@ ENTITY_DEFS = {
     },
     ['tank'] = {
         name = 'tank',
+        team = 'ALLY_TEAM',
         size = {
             x = TILE_SIZE * 0.6,
             y = TILE_SIZE * 0.6
@@ -60,13 +62,40 @@ ENTITY_DEFS = {
         flipOffset = TILE_SIZE * 0.6,
         color = {32, 96, 64}
     },
-    ['enemy'] = {
-        name = 'enemy',
+    ['bigboy'] = {
+        name = 'bigboy',
         size = {
             x = TILE_SIZE * 0.6,
             y = TILE_SIZE * 0.6
         },
-        color = {128, 48, 64},
+        animations = {
+            ['idle'] = {
+                frames = {1},
+                interval = 0.1,
+                texture = 'ragebaby'
+            },
+            ['walk'] = {
+                frames = {1},
+                interval = 0.1,
+                texture = 'ragebaby'
+            }
+        },
+        abilities = {
+            ABILITY_DEFS["eat"],
+            ABILITY_DEFS["barf"]
+        },
+        flipOffset = TILE_SIZE * 0.6,
+        color = {96, 64, 48},
+        team = ALLY_TEAM
+    },
+    ['enemy'] = {
+        name = 'enemy',
+        team = ENEMY_TEAM,
+        size = {
+            x = TILE_SIZE * 0.6,
+            y = TILE_SIZE * 0.6
+        },
+        color = {128, 32, 64},
         animations = {
         },
         abilities = {
