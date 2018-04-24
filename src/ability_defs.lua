@@ -96,13 +96,30 @@ ABILITY_DEFS = {
 		cost = 1,
 		cd = 0,
 		range = 1,
-		targetType = UNIT_TARGET,
+		targetType = TILE_TARGET,
 		cast = function(self)
+			local tiles = {}
+			for y, row in ipairs(board.tiles) do
+				for x, cell in ipairs(row) do
+					if board:euclidean(self.actor.tilePos, cell.tilePos) <= self.range then
+						table.insert(tiles, cell)
+					end
+				end
+			end
+
+			TargetState.tiles = tiles
+			TargetState.ability = self
+			gameState.push(TargetState)
 		end,
 		execute = function(self, target)
+			print("barfing")
 			local barfee = table.remove(self.actor.stomach)
-			baffee.alive = true
+			barfee.alive = true
 			barfee.tilePos = target.tilePos
+			barfee.position = board:toWorldPos(barfee.tilePos)
+			board.tiles[barfee.tilePos.y][barfee.tilePos.x].entity = barfee;
+			board.tiles[barfee.tilePos.y][barfee.tilePos.x].color = barfee.color;
+			self.actor.ap = self.actor.ap - self.cost
 		end,
 		undo = function(self)
 		end 

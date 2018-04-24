@@ -76,7 +76,7 @@ ENTITY_DEFS = {
             },
             ['walk'] = {
                 frames = {1},
-                interval = 0.1,
+                interval = 0.1, 
                 texture = 'ragebaby'
             }
         },

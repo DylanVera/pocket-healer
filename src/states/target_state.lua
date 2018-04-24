@@ -67,14 +67,19 @@ end
 function TargetState:checkTarget()
 	local tile = board:getTile(cursor.tilePos)
 	local entity = board:entityAt(cursor.tilePos)
-	if tile ~= nil then
-		for i, n in ipairs(self.tiles) do
-			if n == tile then
-				if self.ability.targetType == UNIT_TARGET and entity ~= nil then
-					self.ability:execute(entity)			
+	if tile ~= nil then	
+		if contains(self.tiles, tile) then
+			if self.ability.targetType == UNIT_TARGET and entity ~= nil then
+				self.ability:execute(entity)			
+			end
+			if self.ability.targetType == TILE_TARGET then
+				if entity ~= nil then
+					self.ability:execute(entity)
+				else
+					self.ability:execute(tile)
 				end
 			end
 		end
-		gameState.pop()
 	end
+	gameState.pop()
 end

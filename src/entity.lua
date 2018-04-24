@@ -162,3 +162,22 @@ function Entity:kill()
 	board.tiles[self.tilePos.y][self.tilePos.x].color = {0,0,0}
 	board.tiles[self.tilePos.y][self.tilePos.x].entity = nil
 end
+
+function Entity:grow(nx, ny)
+	-- self.width = self.width * nx
+	-- self.height = self.height * ny
+	flux.to(
+		self,
+		1, 
+		{ 
+			width = self.width * nx
+		})
+	:ease("backout")
+	flux.to(
+		self,
+		1, 
+		{ 
+			height = self.height * ny
+		})
+	:ease("backout")
+end

@@ -77,12 +77,11 @@ function PlayState:update(dt)
 	end
    
 	-- actionbar:update(dt)
-
     if suit.Button("Clear", TILE_SIZE, TILE_SIZE, TILE_SIZE * 4, TILE_SIZE).hit then
     	board:clear()
     end
 
-    if suit.Button("End Turn", TILE_SIZE, TILE_SIZE * 2.5, TILE_SIZE * 4, TILE_SIZE).hit then
+    if suit.Button("End Turn", TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 4, TILE_SIZE).hit then
     	self:endTurn()
     end
 end
@@ -105,8 +104,6 @@ function PlayState:keypressed(key)
 		-- entities[currentUnit]:move(VEC_RIGHT)
 	end
 
-	
-	
 	if key == "x" or key == "space" then
 		local entity = board:entityAt(cursor.tilePos)
 		if entity ~= nil then
@@ -143,10 +140,6 @@ function PlayState:process()
 end
 
 function PlayState:endTurn()
-	--move all this garbage to an entity end turn function
-	-- entities[currentUnit]:endTurn()
-	-- currentUnit = currentUnit % #entities + 1
-	-- actionbar:changeActor(entities[currentUnit])
 	for i, team in ipairs(entities) do
 		for j, entity in ipairs(team) do
 			entity:endTurn()
