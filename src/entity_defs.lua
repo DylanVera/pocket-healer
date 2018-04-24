@@ -85,7 +85,7 @@ ENTITY_DEFS = {
             ABILITY_DEFS["barf"]
         },
         flipOffset = TILE_SIZE * 0.6,
-        color = {96, 64, 48},
+        color = {128, 32, 96},
         team = ALLY_TEAM
     },
     ['enemy'] = {

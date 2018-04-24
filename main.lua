@@ -34,12 +34,11 @@ function love.update(dt)
     
     -- gStateStack:update(dt)
 
-    love.keyboard.keysPressed = {}
 end
 
 function love.draw()
     -- push:start()
-    
+
     suit.draw()
 	screen:apply()
     -- push:finish()
@@ -55,9 +54,5 @@ function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     end
-    love.keyboard.keysPressed[key] = true
 end
 
-function love.keyboard.wasPressed(key)
-    return love.keyboard.keysPressed[key]
-end

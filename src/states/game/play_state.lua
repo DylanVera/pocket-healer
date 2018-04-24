@@ -5,9 +5,9 @@ end
 
 function PlayState:enter()
 	board = Board()
-    healer = Entity(ENTITY_DEFS['tank'], Vector(2,2))
-  	healer:changeAnimation("idle")
-  	bigboy = Entity(ENTITY_DEFS['bigboy'], Vector(2,3))
+   --  healer = Entity(ENTITY_DEFS['tank'], Vector(2,2))
+  	-- healer:changeAnimation("idle")
+  	bigboy = Entity(ENTITY_DEFS['bigboy'], Vector(2,2))
   	bigboy:changeAnimation("idle")
     enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
     enemy2 = Entity(ENTITY_DEFS['enemy'], Vector(4,4))
@@ -31,9 +31,9 @@ function PlayState:enter()
 	currentUnit = 1
     commands = {}
     bigboy.health = 1
-    actionbar = ActionBar(healer)
+    actionbar = ActionBar(bigboy)
 
-    allies = {bigboy, healer}
+    allies = {bigboy}--, healer}
     enemies = {enemy, enemy2}
     entities = {allies, enemies}
     enemiesKilled = 0
