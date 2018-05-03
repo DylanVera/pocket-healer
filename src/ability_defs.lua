@@ -16,7 +16,6 @@ ABILITY_DEFS = {
 		execute = function(self, target) 
 			print("heal")
 			target:heal(self.value)
-			self.actor.ap = self.actor.ap - self.cost
 		end,
 		undo = function()
 		end
@@ -42,21 +41,18 @@ ABILITY_DEFS = {
 	    	TargetState.tiles = neighbors
 	    	TargetState.ability = self
 	    	gameState.push(TargetState)
-	    	--how are we figuring out what the target is
 		end,
 		execute = function(self, target)
 			print("strike")
 			target:damage(self.value)
-			self.actor.ap = self.actor.ap - self.cost
 			screen:shake(100)
-
 			--find out target
 			-- target:damage(damage)
 		end,
 		undo = function()
 		end
 	},
-	["block"] = {
+	["block"] = {	
 		cost = 1,
 		cd = 2,
 		targetType = NONE,
@@ -93,7 +89,7 @@ ABILITY_DEFS = {
 
 			flux.to(
 				target.position,
-				0.25,
+				0.3,
 				{
 					x = self.actor.position.x + self.actor.width/2,
 					y = self.actor.position.y + self.actor.height/2
@@ -112,8 +108,6 @@ ABILITY_DEFS = {
 					height = 0
 				}
 			)
-						
-			self.actor.ap = self.actor.ap - self.cost
 		end,
 		undo = function()
 		end 
@@ -124,23 +118,28 @@ ABILITY_DEFS = {
 		range = 2,
 		targetType = TILE_TARGET,
 		cast = function(self)
-			local tiles = {}
-			for y, row in ipairs(board.tiles) do
-				for x, cell in ipairs(row) do
-					if board:euclidean(self.actor.tilePos, cell.tilePos) <= self.range and 
-						cell ~= board.tiles[self.actor.tilePos.y][self.actor.tilePos.x] and board:isEmpty(cell.tilePos) then
-						table.insert(tiles, cell)
+			if #self.actor.stomach > 0 then
+				local tiles = {}
+				for y, row in ipairs(board.tiles) do
+					for x, cell in ipairs(row) do
+						if board:euclidean(self.actor.tilePos, cell.tilePos) <= self.range and 
+							cell ~= board.tiles[self.actor.tilePos.y][self.actor.tilePos.x] and board:isEmpty(cell.tilePos) then
+							table.insert(tiles, cell)
+						end
 					end
 				end
-			end
 
-			TargetState.tiles = tiles
-			TargetState.ability = self
-			gameState.push(TargetState)
+				TargetState.tiles = tiles
+				TargetState.ability = self
+				gameState.push(TargetState)
+			else
+				print("empty stomach :(")
+			end
 		end,
 		--damage entities in target tile or what?
 		execute = function(self, target)
 			print("barfing")
+
 			local barfee = table.remove(self.actor.stomach)
 			barfee.alive = true
 			barfee.position = Vector(self.actor.position.x, self.actor.position.y)
@@ -151,13 +150,12 @@ ABILITY_DEFS = {
 			--whats happening here?
 			flux.to(
 				barfee.position,
-				0.5,
+				0.3,
 				{
 					x = movePos.x,
 					y = movePos.y
 				}
 			)
-			:ease("cubicout")
 			:oncomplete(function()
 				board.tiles[barfee.tilePos.y][barfee.tilePos.x].entity = barfee;
 				board.tiles[barfee.tilePos.y][barfee.tilePos.x].color = barfee.color;
@@ -165,16 +163,13 @@ ABILITY_DEFS = {
 
 			flux.to(
 				barfee,
-				0.5,
+				1,
 				{
 					width = TILE_SIZE * 0.6,
 					height = TILE_SIZE * 0.6
 				}
 			)
-			:ease("cubicout")
-
-			
-			self.actor.ap = self.actor.ap - self.cost
+			:ease("elasticout")
 		end,
 		undo = function(self)
 		end 

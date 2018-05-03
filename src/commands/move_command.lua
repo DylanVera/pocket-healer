@@ -12,16 +12,18 @@ MoveCommand = class{
 function MoveCommand:execute()
 	local tilePos = board:toTilePos(self.actor.position + (self.dir * TILE_SIZE))
 	if not self.actor.moving then
-		board.tiles[self.oldPos.y][self.oldPos.x].entity = nil	
-		board.tiles[tilePos.y][tilePos.x].baseColor = self.actor.color
-		board.tiles[tilePos.y][tilePos.x].color = board.tiles[tilePos.y][tilePos.x].baseColor
+		board.tiles[self.oldPos.y][self.oldPos.x].entity = nil
+		board.tiles[self.oldPos.y][self.oldPos.x].baseColor = {0,0,0}
+		board.tiles[self.oldPos.y][self.oldPos.x].color = {0,0,0}
+		board.tiles[self.oldPos.y][self.old Pos.x]:onExit(self.actor)	
+		
 		table.insert(commands, self)
 		self.actor.moving = true
 		self.actor.tilePos = self.actor.tilePos + self.dir
 		board.tiles[tilePos.y][tilePos.x].entity = self.actor
 		self.actor:changeAnimation("walk")
 
-		if not self.isTeleport then
+		if not self.isTeleport then 
 			flux.to(
 			self.actor.position, 
 			self.actor.moveSpeed, 
@@ -31,7 +33,6 @@ function MoveCommand:execute()
 			})
 			:oncomplete(function() 
 				board:clear()
-				UnitState:updateMoveRange()
 				self.actor.moving = false 
 				self.actor:changeAnimation("idle")
 			end)
@@ -40,9 +41,8 @@ function MoveCommand:execute()
 			self.actor.moving = false
 			self.actor:changeAnimation("idle")
 			board:clear()
-			UnitState:updateMoveRange()
 		end
-		
+		board.tiles[tilePos.y][tilePos.x]:onEnter(self.actor)
 	end
 end
 

@@ -39,7 +39,6 @@ require("src/commands.move_command")
 
 --game states
 require("src/states.base_state")
-require("src/states.unit_state")
 require("src/states.target_state")
 require("src/states.game.menu_state")
 require("src/states.game.play_state")

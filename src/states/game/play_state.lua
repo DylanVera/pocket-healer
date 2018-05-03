@@ -11,7 +11,8 @@ function PlayState:enter()
   	bigboy:changeAnimation("idle")
     enemy = Entity(ENTITY_DEFS['enemy'], Vector(8,8))
     enemy2 = Entity(ENTITY_DEFS['enemy'], Vector(4,4))
-    --enemy2:changeAnimation("idle")
+    enemy:changeAnimation("idle")
+    enemy2:changeAnimation("idle")
     cursor = Cursor(Vector(2,2))
 
     --box = GameObject(GAME_OBJECT_DEFS['box'], Vector(4,4))
@@ -30,8 +31,9 @@ function PlayState:enter()
 	-- end)?>
 	currentUnit = 1
     commands = {}
-    bigboy.health = 1
+    
     actionbar = ActionBar(bigboy)
+
 
     allies = {bigboy}--, healer}
     enemies = {enemy, enemy2}
@@ -45,28 +47,33 @@ end
 function PlayState:draw()
 	push:start()
 	board:draw()
-	cursor:draw()
+
+	--board is one room, what
 	for i, team in ipairs(entities) do
 		for j, unit in ipairs(team) do
 			if unit.alive then
-				if i == 1 then
-					unit:render()
-				else
-					unit:draw()
-				end
+				unit:render()
 			end
 		end
 	end
+
+	actionbar:draw()
+	love.graphics.setNewFont(TILE_SIZE/2)
+	love.graphics.setColor(bigboy.color)
+	love.graphics.print("HP: "..bigboy.health, ACTIONBAR_RENDER_OFFSET_X - (TILE_SIZE*2), ACTIONBAR_RENDER_OFFSET_Y )
+	love.graphics.print("GUT: "..#bigboy.stomach, ACTIONBAR_RENDER_OFFSET_X - (TILE_SIZE*2), ACTIONBAR_RENDER_OFFSET_Y + TILE_SIZE/2)
+
 	love.graphics.setColor(255,255,255)
 	love.graphics.print("fps: " .. love.timer.getFPS(), 0,0)
+	
 	push:finish()
 end
 
 function PlayState:update(dt)
 	-- remove entity from the table if health is <= 0
-	if enemiesKilled == #enemies then
-    	gameState.switch(MenuState)
-    end
+	-- if enemiesKilled == #enemies then
+ --    	gameState.switch(MenuState)
+ --    end
 	for i, team in ipairs(entities) do
 		for j, entity in ipairs(team) do
 			if entity.alive then
@@ -76,7 +83,6 @@ function PlayState:update(dt)
 		end
 	end
    
-	-- actionbar:update(dt)
     if suit.Button("Clear", TILE_SIZE, TILE_SIZE, TILE_SIZE * 4, TILE_SIZE).hit then
     	board:clear()
     end
@@ -88,28 +94,31 @@ end
 
 function PlayState:keypressed(key)
 	if key == "w" or key == "up" then
-		cursor:move(VEC_UP)
+		bigboy:move(VEC_UP)
 		-- entities[currentUnit]:move(VEC_UP)
 	end
 	if key == "a" or key == "left" then
-		cursor:move(VEC_LEFT)
+		bigboy:move(VEC_LEFT)
 		-- entities[currentUnit]:move(VEC_LEFT)
 	end
+
 	if key == "s" or key == "down" then
-		cursor:move(VEC_DOWN)
+		bigboy:move(VEC_DOWN)
 		-- entities[currentUnit]:move(VEC_DOWN)
 	end
 	if key == "d" or key == "right" then
-		cursor:move(VEC_RIGHT)
+		bigboy:move(VEC_RIGHT)
 		-- entities[currentUnit]:move(VEC_RIGHT)
 	end
 
-	if key == "x" or key == "space" then
-		local entity = board:entityAt(cursor.tilePos)
-		if entity ~= nil then
-			UnitState.unit = entity
-			gameState.push(UnitState)
-		end
+	if key == "1" then
+		actionbar:cast(1)
+	elseif key == "2" then
+		actionbar:cast(2)
+	elseif key == "3" then
+		actionbar:cast(3)
+	elseif key == "4" then
+		actionbar:cast(4)
 	end
 end
 
@@ -126,13 +135,17 @@ function PlayState:mousepressed(x, y, button, istouch)
 				gameState.push(UnitState)
 			end
 		end
+		if button == 2 then
+			tile = Tile(TILE_TYPES["spikeTrap"], Vector(tile.tilePos.x, tile.tilePos.y))
+			board.tiles[tile.tilePos.y][tile.tilePos.x] = tile
+		end
 	end
 end
 
-function PlayState:process() 
+function PlayState:processAI() 
   --local command = actors[_currentActor].getAction();
 
-  --// Don't advance past the actor if it didn't take a turn.
+  --// Don't advance past the actor if it didn't take a turn. 
   --if action == nil then return nil end
 
   --action.perform();

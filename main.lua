@@ -17,7 +17,7 @@ function love.load()
         highdpi = true,
         canvas = false
     })
-
+    screen:setDimensions(push:getDimensions())
     gStateStack = StateStack()
     -- gStateStack:push(MenuState())
 
@@ -51,7 +51,7 @@ function love.resize(w, h)
 end
 
 function love.keypressed(key)
-    if key == 'escape' then
+    if key == "end" then
         love.event.quit()
     end
 end

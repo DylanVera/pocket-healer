@@ -4,24 +4,28 @@ function TargetState:init()
 end
 
 function TargetState:update(dt)
-	UnitState:update(dt)
+	PlayState:update(dt)
 end
 
 function TargetState:draw()
-	UnitState:draw()
+	PlayState:draw()
+	push:start()
+	cursor:render()
+	push:finish()
 end	
 
 function TargetState:enter()
 	for i,n in ipairs(self.tiles) do
 		n.color = {255,64,96}
 	end
+	cursor.tilePos = self.tiles[1].tilePos
+	cursor.position = board:toWorldPos(cursor.tilePos)
 end
 
 function TargetState:leave()
 	for i,n in ipairs(self.tiles) do
 		n.color = n.baseColor
 	end
-	UnitState:updateMoveRange()
 end
 
 function TargetState:keypressed(key)
@@ -42,11 +46,11 @@ function TargetState:keypressed(key)
 		-- entities[currentUnit]:move(VEC_RIGHT)
 	end
 	
-	if key == "x" then
+	if key == "x" or key == "space" then
 		self:checkTarget()
 	end
 
-	if key == "space" then
+	if key == "escape" then
 		gameState.pop()
 	end
 end

@@ -7,7 +7,7 @@ Cursor = class{
 	end
 }
 
-function Cursor:draw()
+function Cursor:render()
 	love.graphics.setColor(255,255,255)
 	love.graphics.getLineWidth(TILE_SIZE/16)
 	love.graphics.rectangle('line', self.position.x, self.position.y, TILE_SIZE, TILE_SIZE)

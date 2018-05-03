@@ -10,6 +10,8 @@ Entity = class{
 		self.team = def.team
 		self.moving = false
 
+		self.name = def.name
+		
 		self.color = def.color
 		self.facingRight = false
 
@@ -18,9 +20,9 @@ Entity = class{
 	 --        ['play'] = function() end,
 	 --        ['game-over'] = function() end
 	 --    }
-
+  
 	    -- self.state:change('start')
-
+	    
 		self.moveSpeed = 0.25
 		self.moveRange = 4
 		self.abilities = def.abilities or {}
@@ -35,6 +37,7 @@ Entity = class{
 		self.effects = {}
 		self.alive = true
 		self.stomach = {}
+		
 		flux.to(self.position, 0.75, {x = self.position.x, y = (self.tilePos.y-1) * TILE_SIZE + MAP_RENDER_OFFSET_Y}):ease("backout"):delay(math.random()/(self.tilePos.y+1))
 		board.tiles[self.tilePos.y][self.tilePos.x].entity = self
 		board.tiles[self.tilePos.y][self.tilePos.x].baseColor = self.color
@@ -112,19 +115,15 @@ function Entity:render()
 end
 
 --use correct number of ap
-function Entity:move(path)
-	local port = #path > 1
-	--self:flip()
-	local tilePos = path[1].tilePos
-	if board:isEmpty(tilePos) and self.ap >= #path and not self.moving then
-		self.ap = self.ap - #path
-		local dir = path[1].tilePos - self.tilePos
+function Entity:move(dir)
+	
+	local tilePos = self.tilePos + dir
+	if board:isEmpty(tilePos) and not self.moving then
 		if (self.facingRight and dir == VEC_LEFT) or (not self.facingRight and dir == VEC_RIGHT) then
 			self:flip()
 		end
-		
-		print(port)
-		MoveCommand(self, dir, port):execute()
+
+		MoveCommand(self, dir, false):execute()
 	end
 end
 
@@ -139,7 +138,7 @@ function Entity:flip()
 end
 
 function Entity:cast(i)
-	if self.ap >= self.abilities[i].cost then
+	if self.ap >= self.abilities[i].cost  and self.abilities[i]  ~= nil then
 		Ability(self.abilities[i], self):cast()
 	end
 end
@@ -155,9 +154,11 @@ end
 
 function Entity:kill()
 	self.alive = false
+	
 	if self.team == ENEMY_TEAM then
 		enemiesKilled = enemiesKilled + 1
 	end
+
 	board.tiles[self.tilePos.y][self.tilePos.x].baseColor = {0,0,0}
 	board.tiles[self.tilePos.y][self.tilePos.x].color = {0,0,0}
 	board.tiles[self.tilePos.y][self.tilePos.x].entity = nil
@@ -170,13 +171,7 @@ function Entity:grow(nx, ny)
 		self,
 		1, 
 		{ 
-			width = self.width * nx
-		})
-	:ease("backout")
-	flux.to(
-		self,
-		1, 
-		{ 
+			width = self.width * nx,
 			height = self.height * ny
 		})
 	:ease("backout")

@@ -8,7 +8,9 @@ Tile = class{
 		self.entity = nil	--queue/stack?
 		self.baseColor = type.color or {0,0,0}
 		self.color = self.baseColor
+		self.colors = {}
 		self.onEnter = type.onEnter or function() end
+		self.onExit = type.onExit or function() end
 		self.prop = nil
 		flux.to(self.position, 0.75, {x = self.position.x, y = (self.tilePos.y-1) * TILE_SIZE + MAP_RENDER_OFFSET_Y}):ease("backout"):delay(math.random()/(self.tilePos.y+1))
 	end
@@ -33,4 +35,9 @@ function Tile:toggleSolid()
 	else
 		self.color = TILE_TYPES["blank"].color
 	end
+end
+
+function Tile:clearColors()
+	self.colors = {}
+	table.insert(self.colors, self.baseColor)
 end
