@@ -15,7 +15,7 @@ function MoveCommand:execute()
 		board.tiles[self.oldPos.y][self.oldPos.x].entity = nil
 		board.tiles[self.oldPos.y][self.oldPos.x].baseColor = {0,0,0}
 		board.tiles[self.oldPos.y][self.oldPos.x].color = {0,0,0}
-		board.tiles[self.oldPos.y][self.old Pos.x]:onExit(self.actor)	
+		board.tiles[self.oldPos.y][self.oldPos.x]:onExit(self.actor)	
 		
 		table.insert(commands, self)
 		self.actor.moving = true
@@ -43,6 +43,8 @@ function MoveCommand:execute()
 			board:clear()
 		end
 		board.tiles[tilePos.y][tilePos.x]:onEnter(self.actor)
+		board.tiles[tilePos.y][tilePos.x].color = self.actor.color
+		board.tiles[tilePos.y][tilePos.x].baseColor = self.actor.color
 	end
 end
 
